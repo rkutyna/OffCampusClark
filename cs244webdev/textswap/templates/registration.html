@@ -1,55 +1,62 @@
-{% comment %} <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Registration</title>
+    <style>
+        header {
+            background-color: red;
+            color: white;
+            padding: 20pxpx;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 10px;
+            width: 250px;
+            height: 100%;
+        }
+        form {
+          margin: 50px auto 0; /* Push the form down the page */
+          width: 50%; /* Set the width of the form */
+          padding: 20px; /* Add padding to the form */
+          box-sizing: border-box; /* Include padding in the width calculation */
+          border: 2px solid black; /* Just for visualization */
+          text-align: center;
+        }
+
+        form label {
+          display: block; /* Ensure each label is on a new line */
+          text-align: center; /* Center the text */
+        }
+        .search-bar {
+          display: inline-block;
+          width: 300px;
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid white;
+          background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+          color: white;
+          margin-top: 20px; /* Adjust margin-top to position the search bar */
+        }
+
+        .search-bar:focus {
+          outline: none; /* Remove outline when the search bar is focused */
+        }
+    </style>
 </head>
 <body>
-    <h2>Registration</h2>
+    {% load static %}
+    <header>
+        <img src="{% static 'cuhorizredlg-2-1.png' %}" alt="Logo" class="logo">
+        <input type="text" class="search-bar" placeholder="Search...">
+    </header>
     <form method="post" action="{% url 'registration' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Register</button>
     </form>
 </body>
-</html> {% endcomment %}
-
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <title>Wireframe - 1</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A600%2C700"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A600%2C700"/>
-  <link rel="stylesheet" href="./styles/wireframe-1.css"/>
-</head>
-<body>
-<div class="wireframe-1-5cA">
-  <p class="register-CAz">Register</p>
-  <p class="please-select--4DC">Please Select:</p>
-  <div class="auto-group-iezk-NUn">
-    <p class="im-a-student-im-a-landlord--VpJ">
-    I’m a student: 
-    <br/>
-    I’m a landlord: 
-    </p>
-    <div class="auto-group-2ahc-c8E">
-      <div class="auto-group-6wm4-kVL">
-        <div class="ellipse-2-6JJ">
-        </div>
-      </div>
-      <div class="auto-group-arvi-aDU">
-        <div class="ellipse-3-gGW">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="frame-12-1pa">Name: </div>
-  <div class="frame-13-tNa">Email:</div>
-  <div class="frame-14-BsU">Password:</div>
-  <div class="frame-15-U5t">Confirm Password: </div>
-  <div class="frame-16-6sx">Create Account</div>
-</div>
-</body>
+</html>
