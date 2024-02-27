@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
-from .models import User
+from .models import User, Apartment
 from .forms import LoginForm, RegistrationForm
 
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
-    return render(request, 'home.html')  # Replace with your actual template
+    apartments = Apartment.objects.all()
+    return render(request, 'offcampus/home.html', {'apartments': apartments})  # Replace with your actual template
 
 def login_view(request):
     if request.method == 'POST':
@@ -28,7 +29,7 @@ def login_view(request):
 
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'offcampus/login.html', {'form': form})
 
 
 from django.contrib.auth.models import User
@@ -60,4 +61,4 @@ def registration_view(request):
 
     else:
         form = RegistrationForm()
-    return render(request, 'registration.html', {'form': form})
+    return render(request, 'offcampus/registration.html', {'form': form})
