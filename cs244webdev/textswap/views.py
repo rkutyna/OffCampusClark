@@ -62,3 +62,9 @@ def registration_view(request):
     else:
         form = RegistrationForm()
     return render(request, 'offcampus/registration.html', {'form': form})
+
+def message_view(request):
+    return render(request, 'offcampus/messages.html')
+
+
+    
