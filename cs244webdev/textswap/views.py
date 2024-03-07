@@ -69,4 +69,19 @@ def message_view(request):
     return render(request, 'offcampus/messages.html', {'apartment_names': apartment_names})
 
 
+"""Messaging app should have the landlordsbe associated with a specific adresses or apartment so that when 
+they create a message the message goes directly to a landlord - this is for learning about the house"""
+
+
+"""For subletting, users post that they are looking to sublet on the page and people can message directly from there.
+Brings them to the messaging page for that sublet"""
+
+"""Messaging can be filtered between learning about house(messages are with landlord)
+Or with subletters"""
+
+"""Need a distinction in the messaging page for subletters or learning about house. Maybe S or something on the side"""
+
+
+
+
     
