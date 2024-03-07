@@ -16,6 +16,51 @@
         }
     </style> {% endcomment %}
 
+    <style>
+        .my-wrapper {
+            text-align: right;
+            margin-top: 20px; /* Adjust as needed */
+            margin-right: 20px; /* Adjust as needed */
+        }
+        
+        .apartments-dropdown {
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        #apartment-select {
+            width: 250px; /* Adjust as needed */
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        #select-button {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        
+        #select-button:hover {
+            background-color: #e0e0e0;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 10px 0;
+            text-align: center;
+            border-top: 1px solid #ccc;
+        }
+        
+        
+    </style>
+
 </head>
 
 
@@ -54,10 +99,32 @@
           </div>
         </div>
       </nav>
+      <div class = "container">
+      <div class="my-wrapper">
+        <div class="apartments-dropdown">
+            <label for="apartment-select"></label>
+            <select id="apartment-select">
+                <option value="">Select apartment to message</option>
+                {% for apartment_name in apartment_names %}
+                    <option value="{{ apartment_name }}">{{ apartment_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button id="select-button">Select</button>
+        </div>
+    </div>
 
-      <footer>
+    <footer>
         <p>&copy; 2024 OffCampus Clark. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.getElementById('select-button').addEventListener('click', function(){
+            var selectedApartment = document.getElementById( "apartment-select" ).value;
+
+            alert("You selected: " + selectedApartment);
+        });
+    </script>
 
 </body>
 </html>

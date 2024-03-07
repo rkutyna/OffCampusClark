@@ -138,6 +138,7 @@
         }
     </style>
 </head> {% endcomment %}
+  <div class = "container">
     <div class="form-container"> <!-- Use a specific class for the form container -->
       <form method="post" action="{% url 'registration' %}">
           {% csrf_token %}
@@ -164,5 +165,6 @@
           <button type="submit">Register</button>
       </form>
     </div>
+  </div>
 </body>
 </html>
