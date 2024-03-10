@@ -13,7 +13,7 @@
     <style>
           /* CSS for the form container */
           .form-container {
-            margin-top: 50px;
+            margin-top: 400px;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -52,6 +52,10 @@
           /* Style form checkboxes */
           .form-container .form-check {
             text-align: left;
+          }
+          .login-heading {
+            margin-top: 50px;
+            text-align: center;
           }
     </style> 
 
@@ -138,6 +142,7 @@
         }
     </style>
 </head> {% endcomment %}
+  <h2 class="login-heading">Register</h2>
   <div class = "container">
     <div class="form-container"> <!-- Use a specific class for the form container -->
       <form method="post" action="{% url 'registration' %}">

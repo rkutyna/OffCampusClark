@@ -12,46 +12,50 @@
     <link href="{% static 'styles.css' %}" rel="stylesheet">
 
     <style>
-        /* Style for login form */
-        .login-form {
-          margin-top: 50px;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 50%; /* Adjust the width as needed */
-          padding: 20px;
-          border: 2px solid black;
-          text-align: center;
-        }
-        
-        .login-form label {
-          display: block;
-          margin-bottom: 10px;
-          text-align: left;
-        }
-        
-        .login-form input[type="text"],
-        .login-form input[type="password"] {
-          width: 100%;
-          padding: 10px;
-          margin-bottom: 20px;
-          box-sizing: border-box;
-        }
-        
-        .login-form button[type="submit"] {
-          width: 100%;
-          padding: 10px;
-          background-color: #007bff;
-          color: #fff;
-          border: none;
-          cursor: pointer;
-        }
-
-        .login-heading {
-            margin-top: 50px;
-            text-align: center;
-          }
+      .my-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Set the height of the container to full viewport height */
+        margin-top: -250px;
+      }
+      /* Style for login form */
+      .login-form {
+        margin-top: 100px; /* Adjust as needed */
+        width: 50%; /* Adjust the width as needed */
+        padding: 20px;
+        border: 2px solid black;
+        text-align: center;
+      }
+      
+      .login-form label {
+        display: block;
+        margin-bottom: 10px;
+        text-align: left;
+      }
+      
+      .login-form input[type="text"],
+      .login-form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+      }
+      
+      .login-form button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .login-heading {
+        margin-top: 50px;
+        text-align: center;
+      }
+      
     </style>
 </head>
 
@@ -90,8 +94,11 @@
           </div>
         </div>
       </nav>
-    <h2 class="login-heading">Login</h2>
-    <div class = "container">
+
+    
+  <h2 class="login-heading">Login</h2>
+  <div class = "container">
+    <div class="my-wrapper">
       <div class="login-form">
           <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
@@ -104,6 +111,7 @@
             <button type="submit">Login</button>
           </form>
       </div>
+    </div>
   </div>
 </body>
 </html>
