@@ -12,21 +12,21 @@
     <link href="{% static 'styles.css' %}" rel="stylesheet">
     <style>
           .my-wrapper {
-            margin-bottom: -150px;
+            margin-top: 50px;
+            margin-bottom: 100px;
           }
           /* CSS for the form container */
           .form-container {
-            margin-top: 300px;
-            margin-bottom: 0px;
-            position: relative;
-            
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%; /* Adjust the width as needed */
+            margin-top: 50px; /* Adjusted margin-top to push the form up */
+            margin-bottom: 50px; /* Adjusted margin-bottom */
+            position: relative; /* Changed position to relative */
+            width: 50%;
             padding: 20px;
             border: 2px solid black;
             text-align: center;
-          }
+            margin-left: auto; /* Centering the form container */
+            margin-right: auto; /* Centering the form container */
+        }
           
           /* Style form input and label */
           .form-container form label {
@@ -64,7 +64,7 @@
           
           /* Footer style */
           footer {
-            position: fixed;
+            position: fixed; /* Keep footer fixed at the bottom */
             bottom: 0;
             left: 0;
             width: 100%;
@@ -72,7 +72,8 @@
             padding: 10px 0;
             text-align: center;
             border-top: 1px solid #ccc;
-          }
+        }
+    
           
     </style> 
 
@@ -112,53 +113,6 @@
         </div>
       </div>
     </nav>
-{% comment %} <head>
-    <title>Registration</title>
-    <style>
-        header {
-            background-color: red;
-            color: white;
-            padding: 20pxpx;
-            text-align: center;
-            position: relative;
-        }
-        
-        .logo {
-            position: absolute;
-            top: 0px;
-            left: 10px;
-            width: 250px;
-            height: 100%;
-        }
-        form {
-          margin: 50px auto 0; /* Push the form down the page */
-          width: 50%; /* Set the width of the form */
-          padding: 20px; /* Add padding to the form */
-          box-sizing: border-box; /* Include padding in the width calculation */
-          border: 2px solid black; /* Just for visualization */
-          text-align: center;
-        }
-
-        form label {
-          display: block; /* Ensure each label is on a new line */
-          text-align: center; /* Center the text */
-        }
-        .search-bar {
-          display: inline-block;
-          width: 300px;
-          padding: 10px;
-          border-radius: 5px;
-          border: 1px solid white;
-          background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
-          color: white;
-          margin-top: 20px; /* Adjust margin-top to position the search bar */
-        }
-
-        .search-bar:focus {
-          outline: none; /* Remove outline when the search bar is focused */
-        }
-    </style>
-</head> {% endcomment %}
   <h2 class="login-heading">Register</h2>
   <div class = "container">
     <div class = "my-wrapper">
