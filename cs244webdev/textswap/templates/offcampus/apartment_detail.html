@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartment Detail</title>
+</head>
+<body>
+    <h1>Apartment Detail</h1>
+    <div>
+        <img src="{{ apartment.photo.url }}" alt="Apartment Photo" style="max-width: 300px;">
+        <h2>{{ apartment.address }}</h2>
+        <p><strong>Description:</strong> {{ apartment.description }}</p>
+        <p><strong>Rent:</strong> ${{ apartment.rent }}</p>
+        <p><strong>Move-in Date:</strong> {{ apartment.move_in_date }}</p>
+        <p><strong>Lease Length:</strong> {{ apartment.lease_length }}</p>
+        <p><strong>Number of Beds:</strong> {{ apartment.num_beds }}</p>
+        <p><strong>Number of Baths:</strong> {{ apartment.num_baths }}</p>
+        <p><strong>Square Footage:</strong> {{ apartment.num_sqr_ft }}</p>
+        <p><strong>Dishwasher:</strong> {% if apartment.dishwasher %} Yes {% else %} No {% endif %}</p>
+        <p><strong>Sublet:</strong> {% if apartment.sublet %} Yes {% else %} No {% endif %}</p>
+        <p><strong>Pets Allowed:</strong> {% if apartment.pets_allowed %} Yes {% else %} No {% endif %}</p>
+        <p><strong>Owner:</strong> {{ apartment.owner.username }}</p>
+    </div>
+
+    
+</body>
+</html>

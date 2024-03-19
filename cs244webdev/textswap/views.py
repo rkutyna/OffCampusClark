@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import User, Apartment
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ApartmentForm
 
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
@@ -82,6 +82,25 @@ Or with subletters"""
 """Need a distinction in the messaging page for subletters or learning about house. Maybe S or something on the side"""
 
 
+def create_apartment_view(request):
+    if request.method == 'POST':
+        form = ApartmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Save the form data to create a new Apartment instance
+            apartment = form.save(commit=False)
+            apartment.owner = request.user  # Assuming you're using authentication and the user is logged in
+            apartment.save()
+            # Redirect to a page where you want to show the details of the newly created apartment
+            return redirect('apartment_detail', pk=apartment.pk)  # Redirect to a view to show apartment details
+    else:
+        form = ApartmentForm()
+    return render(request, 'offcampus/create_apartment.html', {'form': form})
+
+
+def apartment_detail_view(request, pk):
+    # Retrieve the apartment object based on the primary key (pk)
+    apartment = get_object_or_404(Apartment, pk=pk)
+    return render(request, 'offcampus/apartment_detail.html', {'apartment': apartment})
 
 
     
