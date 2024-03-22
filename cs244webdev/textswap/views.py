@@ -10,30 +10,6 @@ def my_home_view(request):
     apartments = Apartment.objects.all()
     print("test")
     return render(request, 'offcampus/home.html', {'apartments': apartments})  # Replace with your actual template
-
-"""def filtered_apartments(request):
-    print("test")
-    sublet = request.GET.get('sublet')
-    if sublet == 'true':
-        sublet = 1
-    if sublet == 'false':
-        sublet = 0
-    price_range = request.GET.get('price_range')
-
-    # Apply filters to the apartment queryset
-    apartments = Apartment.objects.all()
-    if sublet!=None:
-        print("sublet: True")
-        print(sublet)
-        print(apartments)
-        apartments = apartments.filter(sublet__icontains=sublet)
-        print(apartments)
-    if price_range:
-        print("price_range: True")
-        min_price, max_price = price_range.split('-')
-        apartments = apartments.filter(rent__gte=min_price, rent__lte=max_price)
-
-    return render(request, 'offcampus/home.html', {'apartments': apartments})"""
     
     #claude version
 from django.http import JsonResponse
