@@ -12,7 +12,7 @@ class Apartment(models.Model):
     photo = models.ImageField(upload_to='apartment')
     description = models.TextField()
     dishwasher = models.BooleanField()
-    washer = models.BooleanField(default = False)
+    washer_dryer = models.BooleanField(default = False)
     sublet = models.BooleanField()
     rent = models.IntegerField()
     move_in_date = models.DateField()

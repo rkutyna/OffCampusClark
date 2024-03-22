@@ -52,6 +52,7 @@ def filtered_apartments(request):
     min_price = request.GET.get('minPrice')
     max_price = request.GET.get('maxPrice')
     dishwasher = convertToBinary(request.GET.get('dishwasher'))
+    washer_dryer = convertToBinary(request.GET.get('washer_dryer'))
     move_date_start = request.GET.get('move_date_start')
     move_date_end = request.GET.get('move_date_end')
     pets_allowed = convertToBinary(request.GET.get('pets_allowed'))
@@ -71,6 +72,9 @@ def filtered_apartments(request):
 
     if dishwasher is not None:
         apartments = apartments.filter(dishwasher=dishwasher)
+        
+    if washer_dryer is not None:
+        apartments = apartments.filter (washer_dryer=washer_dryer)
 
     if move_date_start and move_date_end:
         start_date = datetime.strptime(move_date_start, '%Y-%m-%d').date()

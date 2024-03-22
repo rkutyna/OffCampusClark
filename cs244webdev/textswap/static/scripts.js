@@ -5,6 +5,7 @@ $(document).ready(function() {
         var minPrice = $('#minPrice').val();
         var maxPrice = $('#maxPrice').val();
         var dishwasher = $('#dishwasher').val();
+        var washer_dryer = $('#washer_dryer').val();
         var moveDateStart = $('#moveDateStart').val();
         var moveDateEnd = $('#moveDateEnd').val();
         var petsAllowed = $('#petsAllowed').val();
@@ -19,6 +20,7 @@ $(document).ready(function() {
                 minPrice: minPrice,
                 maxPrice: maxPrice,
                 dishwasher: dishwasher,
+                washer_dryer: washer_dryer,
                 move_date_start: moveDateStart,
                 move_date_end: moveDateEnd,
                 pets_allowed: petsAllowed,
