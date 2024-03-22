@@ -8,8 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <link href="{% static 'styles.css' %}" rel="stylesheet">
+    
     {% comment %} <style>
         .navbar.navbar-expand-lg.navbar-dark.bg-dark {
           background-color: rgb(191, 65, 65) !important;
@@ -20,7 +20,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="{% url 'home' %}">
             <img src="static/cuhorizredlg-2-1.png" alt="OffCampus Clark" width="150" height="60" class="d-inline-block align-top"> 
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,28 +53,158 @@
         </div>
       </nav>
 
-    <div class="container">
-        <h1 class="my-4">Apartment Listings</h1>
-        <div class="row row-cols-1 row-cols-md-4 g-4">
-            {% for apartment in apartments %}
-            <div class="col">
-                <div class="card h-100">
-                    <img src="{{ apartment.photo.url }}" class="card-img-top" alt="{{ apartment.address }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ apartment.address }}</h5>
-                        <p class="card-text">{{ apartment.description }}</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+      <!-- Filter form -->
+  <form id="filterForm">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#additionalFilters" aria-expanded="false" aria-controls="additionalFilters">
+      Filters
+    </button>
 
+  <div class="collapse" id="additionalFilters">
+      <div class="card card-body mt-3">
+        <div class="form-group">
+          <label for="sublet">Sublet or Whole Apartment:</label>
+          <select class="form-control" id="sublet">
+            <option value="">All Apartments</option>
+            <option value="true">Sublet</option>
+            <option value="false">Whole Apartment</option>
+            <!-- Add more options as needed -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="priceRange">Price Range:</label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price">
+            <span class="input-group-text">to</span>
+            <input type="number" class="form-control" id="maxPrice" placeholder="Maximum price">
+          </div>
+        </div>
+          <!-- Existing form fields -->
+        
+        <div class="form-group">
+            <label for="dishwasher">Dishwasher:</label>
+            <select class="form-control" id="dishwasher">
+                <option value="">Any</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+      
+        <div class="form-group">
+            <label for="moveDateRange">Move-in Date Range:</label>
+            <div class="input-group">
+                <input type="date" class="form-control" id="moveDateStart" placeholder="Start Date">
+                <span class="input-group-text">to</span>
+                <input type="date" class="form-control" id="moveDateEnd" placeholder="End Date">
+            </div>
+        </div>
+      
+        <div class="form-group">
+            <label for="petsAllowed">Pets Allowed:</label>
+            <select class="form-control" id="petsAllowed">
+                <option value="">Any</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+      
+        <div class="form-group">
+            <label for="numBeds">Number of Beds:</label>
+            <input type="number" class="form-control" id="numBeds" min="1" value="">
+        </div>
+      
+        <div class="form-group">
+            <label for="numBaths">Number of Bathrooms:</label>
+            <input type="number" class="form-control" id="numBaths" min="1" value="">
+        </div>
+        <!-- Existing form buttons -->
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Reset Filters</button>
+      </div>
+    </div>
+  
+    
+  </form>
+
+
+<script>
+  // Function to filter apartment listings based on form inputs
+  /*
+  function filterListings() {
+    var sublet = jQuery('#sublet').val();
+    var priceRange = jQuery('#priceRange').val();
+    
+    // Make AJAX request to the server
+    jQuery.ajax({
+        url: '/filtered_apartments/', // URL of the Django view
+        method: 'GET',
+        data: {
+            sublet: sublet,
+            price_range: priceRange
+            // Add more filter parameters here if needed
+        },
+        success: function(response) {
+            // Update the listings div with the filtered listings
+            jQuery('#listings').html(response);
+            
+        },
+        error: function(xhr, status, error) {
+            // Handle errors if any
+            console.error('Error:', error);
+        }
+    });
+} 
+*/
+
+/* claude version
+function filterListings() {
+  var sublet = jQuery('#sublet').val();
+  var priceRange = jQuery('#priceRange').val();
+
+  jQuery.ajax({
+      url: '/filtered_apartments/',
+      method: 'GET',
+      data: {
+          sublet: sublet,
+          price_range: priceRange
+      },
+      success: function(response) {
+          jQuery('#listings').html(response.apartments_html);
+      },
+      error: function(xhr, status, error) {
+          console.error('Error:', error);
+      }
+  });
+}
+
+  // Function to reset all filters
+  function resetFilters() {
+    jQuery('#filterForm')[0].reset(); // Reset form
+    filterListings(); // Filter listings with default values
+  }
+
+  // Handle form submission to trigger filtering
+  jQuery('#filterForm').submit(function (e) {
+    e.preventDefault(); // Prevent form submission
+    filterListings(); // Filter listings
+    
+  });
+
+  // Initially filter listings with default values
+  filterListings();*/
+</script>
+
+<div id="listings">
+  {% include "offcampus/apartment_list.html" %}
+</div>
     
 
-    <footer>
-        <p>&copy; 2024 OffCampus Clark. All rights reserved.</p>
+
+    <footer class="footer mt-auto py-3 bg-body-tertiary">
+      <div class="container">
+        <span class="text-body-secondary"><p>&copy; 2024 OffCampus Clark. All rights reserved.</p></span>
+      </div>
     </footer>
 
 </body>
+<script src="{% static 'scripts.js' %}"></script>
 </html>
