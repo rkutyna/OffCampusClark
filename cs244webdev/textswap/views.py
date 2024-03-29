@@ -44,7 +44,7 @@ def filtered_apartments(request):
         apartments = apartments.filter(rent__gte=min_price)
         
     if max_price:
-        apartments = a[apartments.filter(rent__lte=max_price)]
+        apartments = [apartments.filter(rent__lte=max_price)]
 
     if dishwasher is not None:
         apartments = apartments.filter(dishwasher=dishwasher)
