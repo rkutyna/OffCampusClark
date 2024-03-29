@@ -10,11 +10,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <link href="{% static 'styles.css' %}" rel="stylesheet">
     
-    {% comment %} <style>
+    <style>
         .navbar.navbar-expand-lg.navbar-dark.bg-dark {
           background-color: rgb(191, 65, 65) !important;
         }
-    </style> {% endcomment %}
+      footer {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-color: #f0f0f0;
+          padding: 10px 0;
+          text-align: center;
+          border-top: 1px solid #ccc;
+      }
+    </style>
 
 </head>
 <body>
@@ -58,45 +68,47 @@
     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#additionalFilters" aria-expanded="false" aria-controls="additionalFilters">
       Filters
     </button>
+    <button type="button" class="btn btn-secondary" id="hideFilters">Hide Filters</button>
 
-  <div class="collapse" id="additionalFilters">
-      <div class="card card-body mt-3">
-        <div class="form-group">
-          <label for="sublet">Sublet or Whole Apartment:</label>
-          <select class="form-control" id="sublet">
-            <option value="">All Apartments</option>
-            <option value="true">Sublet</option>
-            <option value="false">Whole Apartment</option>
-            <!-- Add more options as needed -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="priceRange">Price Range:</label>
-          <div class="input-group">
-            <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price">
-            <span class="input-group-text">to</span>
-            <input type="number" class="form-control" id="maxPrice" placeholder="Maximum price">
+
+    <div class="collapse" id="additionalFilters">
+        <div class="card card-body mt-3">
+          <div class="form-group">
+            <label for="sublet">Sublet or Whole Apartment:</label>
+            <select class="form-control" id="sublet">
+              <option value="">All Apartments</option>
+              <option value="true">Sublet</option>
+              <option value="false">Whole Apartment</option>
+              <!-- Add more options as needed -->
+            </select>
           </div>
-        </div>
-          <!-- Existing form fields -->
-        
-        <div class="form-group">
-            <label for="dishwasher">Dishwasher:</label>
-            <select class="form-control" id="dishwasher">
+          <div class="form-group">
+            <label for="priceRange">Price Range:</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price">
+              <span class="input-group-text">to</span>
+              <input type="number" class="form-control" id="maxPrice" placeholder="Maximum price">
+            </div>
+          </div>
+            <!-- Existing form fields -->
+          
+          <div class="form-group">
+              <label for="dishwasher">Dishwasher:</label>
+              <select class="form-control" id="dishwasher">
+                  <option value="">Any</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label for="washer_dryer">Laundry Included:</label>
+            <select class="form-control" id="washer_dryer">
                 <option value="">Any</option>
                 <option value="true">Yes</option>
                 <option value="false">No</option>
             </select>
         </div>
-
-        <div class="form-group">
-          <label for="washer_dryer">Laundry Included:</label>
-          <select class="form-control" id="washer_dryer">
-              <option value="">Any</option>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-          </select>
-      </div>
       
         <div class="form-group">
             <label for="moveDateRange">Move-in Date Range:</label>
@@ -127,7 +139,7 @@
         </div>
         <!-- Existing form buttons -->
         <button type="submit" class="btn btn-primary">Apply Filters</button>
-        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Reset Filters</button>
+        <button type="button" class="btn btn-secondary" id="resetFiltersButton">Reset Filters</button>
       </div>
     </div>
   
@@ -149,5 +161,10 @@
     </footer>
 
 </body>
+<script>
+  $(hideFilters).on('click',function(){
+  $('.collapse').collapse('hide');
+  })
+</script> 
 <script src="{% static 'scripts.js' %}"></script>
 </html>

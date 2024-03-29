@@ -1,26 +1,26 @@
+
+
 $(document).ready(function() {
     // Function to filter apartment listings based on form inputs
     function filterListings() {
-        var sublet = $('#sublet').val();
-        var minPrice = $('#minPrice').val();
-        var maxPrice = $('#maxPrice').val();
-        var dishwasher = $('#dishwasher').val();
-        var washer_dryer = $('#washer_dryer').val();
-        var moveDateStart = $('#moveDateStart').val();
-        var moveDateEnd = $('#moveDateEnd').val();
-        var petsAllowed = $('#petsAllowed').val();
-        var numBeds = $('#numBeds').val();
-        var numBaths = $('#numBaths').val();
+        var sublet = $('#sublet').val() || null;
+        var minPrice = $('#minPrice').val() || '';
+        var maxPrice = $('#maxPrice').val() || '';
+        var priceRange = (minPrice && maxPrice) ? `${minPrice}-${maxPrice}` : '';
+        var dishwasher = $('#dishwasher').val() || null;
+        var moveDateStart = $('#moveDateStart').val() || null;
+        var moveDateEnd = $('#moveDateEnd').val() || null;
+        var petsAllowed = $('#petsAllowed').val() || null;
+        var numBeds = $('#numBeds').val() || null;
+        var numBaths = $('#numBaths').val() || null;
     
         $.ajax({
             url: '/filtered_apartments/',
             method: 'GET',
             data: {
                 sublet: sublet,
-                minPrice: minPrice,
-                maxPrice: maxPrice,
+                price_range: priceRange,
                 dishwasher: dishwasher,
-                washer_dryer: washer_dryer,
                 move_date_start: moveDateStart,
                 move_date_end: moveDateEnd,
                 pets_allowed: petsAllowed,
@@ -36,11 +36,7 @@ $(document).ready(function() {
         });
     }
 
-    // Function to reset all filters
-    function resetFilters() {
-        $('#filterForm')[0].reset(); // Reset form
-        filterListings(); // Filter listings with default values
-    }
+    
 
     // Handle form submission to trigger filtering
     $('#filterForm').submit(function(e) {
@@ -50,4 +46,28 @@ $(document).ready(function() {
 
     // Initially filter listings with default values
     filterListings();
+
+    // Function to reset all filters
+    function resetFilters() {
+        console.log("Hello, world!");
+
+        // Reset form fields to their default values
+        $('#sublet').val('');
+        $('#minPrice').val('');
+        $('#maxPrice').val('');
+        $('#dishwasher').val('');
+        $('#moveDateStart').val('');
+        $('#moveDateEnd').val('');
+        $('#petsAllowed').val('');
+        $('#numBeds').val('');
+        $('#numBaths').val('');
+        $('#washer_dryer').val(''); // Add this line to reset the washer_dryer filter
+
+        // Call filterListings function to update the listings
+        filterListings();
+    }
+    // Bind the resetFilters function to the "Reset Filters" button click event
+    // $('.btn-secondary:contains("Reset Filters")').click(resetFilters);
+    //document.getElementById('resetFiltersButton').addEventListener('click', resetFilters);
+    
 });
