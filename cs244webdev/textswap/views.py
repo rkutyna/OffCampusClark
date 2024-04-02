@@ -154,6 +154,7 @@ def create_apartment_view(request):
             apartment.owner = request.user  # Assuming you're using authentication and the user is logged in
             apartment.save()
             # Redirect to a page where you want to show the details of the newly created apartment
+            print(apartment.pk)
             return redirect('apartment_detail', pk=apartment.pk)  # Redirect to a view to show apartment details
     else:
         form = ApartmentForm()

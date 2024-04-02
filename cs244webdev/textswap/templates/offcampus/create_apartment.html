@@ -94,7 +94,7 @@
       <div class = "container">
         <div class="my-container">
             <div class="form-container">
-                <form method="post" enctype="multipart/form-data">
+              <form id="apartment-form" method="post" enctype="multipart/form-data" action="{% url 'create_apartment' %}" >
                     {% csrf_token %}
                     <div class="form-fields">
                         <div class = "form-field">
@@ -179,7 +179,7 @@
       }
   });
 
-  document.querySelector('form').addEventListener('submit', function(event) {
+  document.querySelector('apartment-form').addEventListener('submit', function(event) {
     const requiredFields = ['address', 'description', 'rent', 'photo', 'sublet', 'lease_length', 'move_in_date']; // Example of required field names
 
     for (const field of requiredFields) {
@@ -190,6 +190,12 @@
             return;
         }
     }
+    // If all required fields are filled out, redirect to the apartment detail view
+    const form = document.getElementById('apartment-form');
+    form.setAttribute('action', `/apartment/${form.dataset.apartmentPk}/`); // Set action attribute to the detail view URL
+    form.setAttribute('method', 'GET'); // Set method to GET
+    form.submit(); // Submit the form
+
   });
 </script>
 </html>
