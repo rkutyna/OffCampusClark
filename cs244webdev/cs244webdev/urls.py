@@ -26,5 +26,3 @@ urlpatterns = [
     # Add other URLs as needed
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
