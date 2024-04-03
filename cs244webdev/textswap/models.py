@@ -10,7 +10,7 @@ class User(models.Model):
         
 class Apartment(models.Model):
     address = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='apartment')
+    photo = models.ImageField(upload_to='images')
     description = models.TextField()
     dishwasher = models.BooleanField()
     washer_dryer = models.BooleanField(default = False)
