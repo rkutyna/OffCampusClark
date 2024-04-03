@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User as Auth_user
 from django.db.models.functions import Now
 
+
 class User(models.Model):
     parent_user = models.ForeignKey(Auth_user, on_delete=models.CASCADE, null=True)
     is_landlord = models.BooleanField(default=False)  # Boolean field for landlord status

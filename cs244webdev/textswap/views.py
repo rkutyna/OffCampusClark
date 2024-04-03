@@ -4,6 +4,7 @@ from .models import User, Apartment
 from .forms import LoginForm, RegistrationForm, ApartmentForm
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.contrib.auth.models import User as Auth_user
 
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
@@ -154,8 +155,11 @@ def create_apartment_view(request):
             apartment.owner = request.user  # Assuming you're using authentication and the user is logged in
             apartment.save()
             # Redirect to a page where you want to show the details of the newly created apartment
-            print(apartment.pk)
+            # print(apartment.pk)
             return redirect('apartment_detail', pk=apartment.pk)  # Redirect to a view to show apartment details
+        else:
+            print("form not valid")
+            print(form.errors)
     else:
         form = ApartmentForm()
     return render(request, 'offcampus/create_apartment.html', {'form': form})
