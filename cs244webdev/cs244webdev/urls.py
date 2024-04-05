@@ -25,4 +25,3 @@ urlpatterns = [
     path('', include('textswap.urls')),  # Include your app's URLs for the root path
     # Add other URLs as needed
 ]
-
