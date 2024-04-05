@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User as Auth_user
 from django.db.models.functions import Now
+from datetime import datetime
+
 
 
 class User(models.Model):
@@ -10,7 +12,7 @@ class User(models.Model):
         
 class Apartment(models.Model):
     address = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='static/images/')
+    photo = models.ImageField(upload_to='static/images')
     description = models.TextField()
     dishwasher = models.BooleanField()
     washer_dryer = models.BooleanField(default = False)
@@ -27,5 +29,5 @@ class Apartment(models.Model):
 class Message(models.Model):
     user1_id = models.ForeignKey(Auth_user, on_delete=models.CASCADE, related_name='sender')
     user2_id = models.ForeignKey(Auth_user, on_delete=models.CASCADE, related_name='receiver')
-    time_sent = models.DateTimeField(db_default=Now())
+    time_sent = models.DateTimeField(default=datetime.now)
     content = models.TextField()
