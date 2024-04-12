@@ -3,6 +3,10 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+
+.DS_Store
+__pycache__
+.env
 # Virtual Environment
 venv/
 
