@@ -15,3 +15,7 @@
 6. Run > docker compose exec django python manage.py makemigrations
 
 7. Run > docker compose exec django python manage.py migrate
+
+The project should show up by going to localhost in a browser.
+
+The files/folders nginx, postgres_files, docker, docker-compose.yml, docekrfile, and dot_env_example were taken from https://github.com/ClarkuCSCI/csci220-django
