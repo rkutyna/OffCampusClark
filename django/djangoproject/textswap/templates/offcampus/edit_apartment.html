@@ -1,80 +1,26 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Edit Apartment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <link href="{% static 'styles.css' %}" rel="stylesheet">
-
     <style>
-      .my-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; /* Set the height of the container to full viewport height */
-        margin-top: -250px;
-      }
-      /* Style for login form */
-      .login-form {
-        margin-top: 100px; /* Adjust as needed */
-        width: 50%; /* Adjust the width as needed */
-        padding: 20px;
-        border: 2px solid black;
-        text-align: center;
-      }
-      
-      .login-form label {
-        display: block;
-        margin-bottom: 10px;
-        text-align: left;
-      }
-      
-      .login-form input[type="text"],
-      .login-form input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        box-sizing: border-box;
-      }
-      
-      .login-form button[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-      }
-      
-      .login-heading {
-        margin-top: 50px;
-        text-align: center;
-      }
-
-      footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #f0f0f0;
-        padding: 10px 0;
-        text-align: center;
-        border-top: 1px solid #ccc;
-      }
-      
+        .navbar.navbar-expand-lg.navbar-dark.bg-dark {
+            background-color: rgb(191, 65, 65) !important;
+          }
+        
     </style>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
           <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'cuhorizredlg-2-1.png' %}" alt="OffCampus Clark" width="150" height="60" class="d-inline-block align-top"> 
+            <img src={%static "cuhorizredlg-2-1.png"%} alt="OffCampus Clark" width="150" height="60" class="d-inline-block align-top"> 
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -106,27 +52,11 @@
         </div>
       </nav>
 
-    
-  <h2 class="login-heading">Login</h2>
-  <div class = "container">
-    <div class="my-wrapper">
-      <div class="login-form">
-          <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-        
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        
-            <button type="submit">Login</button>
-          </form>
-      </div>
-    </div>
-  </div>
-  <footer>
-    <p>&copy; 2024 OffCampus Clark. All rights reserved.</p>
-  </footer>
+    <h1>Edit Apartment</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Apartment</button>
+    </form>
 </body>
 </html>
-
