@@ -27,7 +27,7 @@
         <div class="col">
             <a href="{% url 'apartment_detail' apartment.id %}" class="card-link">
                 <div class="card h-100">
-                    <img src="{{ apartment.photo.url|slice:"10:" }}" class="card-img-top" alt="{{ apartment.address }}">
+                    <img src="{% get_static_prefix %}images/{{ apartment.photo_set.first.photo_name }}" class="card-img-top" alt="{{ apartment.address }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ apartment.address }}</h5>
                         <p class="card-text">

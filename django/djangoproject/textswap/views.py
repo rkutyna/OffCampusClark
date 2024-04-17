@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
-from .models import User, Apartment
+from .models import *
 from .forms import LoginForm, RegistrationForm, ApartmentForm
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.contrib.auth.models import User as Auth_user
+from django.db.models import Prefetch
 
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
-    apartments = Apartment.objects.all()
-    print("test")
+    apartments = Apartment.objects.prefetch_related(
+        Prefetch('photo_set', queryset=Photo.objects.order_by('id'))
+    )
     return render(request, 'offcampus/home.html', {'apartments': apartments})  # Replace with your actual template
     
     #claude version
@@ -156,6 +158,9 @@ def create_apartment_view(request):
             apartment.save()
             # Redirect to a page where you want to show the details of the newly created apartment
             # print(apartment.pk)
+            
+            photo = Photo(apartment_id=apartment, photo=request.FILES['photo'])
+            photo.save()
             return redirect('apartment_detail', pk=apartment.pk)  # Redirect to a view to show apartment details
         else:
             print("form not valid")
@@ -168,7 +173,8 @@ def create_apartment_view(request):
 def apartment_detail_view(request, pk):
     # Retrieve the apartment object based on the primary key (pk)
     apartment = get_object_or_404(Apartment, pk=pk)
-    return render(request, 'offcampus/apartment_detail.html', {'apartment': apartment})
+    photo= get_object_or_404(Photo, apartment_id = pk)
+    return render(request, 'offcampus/apartment_detail.html', {'apartment': apartment, 'photo':photo})
 
 
     

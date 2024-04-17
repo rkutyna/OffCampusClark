@@ -17,4 +17,6 @@ class RegistrationForm(forms.Form):
 class ApartmentForm(forms.ModelForm):
     class Meta:
         model = Apartment
-        fields = ['address', 'photo', 'description', 'dishwasher', 'sublet', 'rent', 'move_in_date', 'lease_length', 'pets_allowed', 'num_beds', 'num_baths', 'num_sqr_ft']
+        fields = ['address', 'description', 'dishwasher', 'sublet', 'rent', 'move_in_date', 'lease_length', 'pets_allowed', 'num_beds', 'num_baths', 'num_sqr_ft']
+        
+    photo = forms.ImageField(label='Photo')
