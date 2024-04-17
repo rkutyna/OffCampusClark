@@ -189,7 +189,7 @@ def edit_apartment(request, apartment_id):
         form = ApartmentForm(request.POST, instance=apartment)
         if form.is_valid():
             form.save()
-            return redirect('apartment_detail', apartment_id=apartment_id)  # Redirect to the detail view of the updated apartment
+            return redirect('apartment_detail', pk = apartment_id)  # Redirect to the detail view of the updated apartment
     else:
         form = ApartmentForm(instance=apartment)
     return render(request, 'offcampus/edit_apartment.html', {'form': form})
