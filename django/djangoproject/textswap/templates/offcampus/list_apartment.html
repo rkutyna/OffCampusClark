@@ -16,28 +16,26 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1 class="my-4">My Active Listings</h1>
-        <div class="row row-cols-1 row-cols-md-4 g-4">
-            {% for listing in user_listings %}
-            <div class="col">
-                <a href="{% url 'edit_apartment' listing.id %}" class="card-link">
-                    <div class="card h-100">
-                        <img src="{% get_static_prefix %}images/{{ listing.photo_name }}" alt="Apartment Photo" class="img-fluid rounded">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ listing.address }}</h5>
-                            <p class="card-text">
-                                {{ listing.description }} <br>
-                                <strong>Rent:</strong> {{ listing.rent }} <br>
-                                <strong>Number of Beds:</strong> {{ listing.num_beds }}
-                            </p>                      
-                        </div>
+<div class="container">
+    <h1 class="my-4">Apartment Listings</h1>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for apartment in apartments %}
+        <div class="col">
+            <a href="{% url 'edit_apartment' apartment.id %}" class="card-link">
+                <div class="card h-100">
+                    <img src="{% get_static_prefix %}images/{{ apartment.photo_set.first.photo_name }}" class="card-img-top" alt="{{ apartment.address }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ apartment.address }}</h5>
+                        <p class="card-text">
+                        {{ apartment.description }} <br>
+                        <strong>Rent:</strong> {{ apartment.rent }} <br>
+                        <strong>Number of Beds:</strong> {{ apartment.num_beds }}
+                        </p>                      
                     </div>
-                </a>
-            </div>
-            {% endfor %}
+                </div>
+            </a>
         </div>
+        {% endfor %}
     </div>
-</body>
+</div>
 </html>

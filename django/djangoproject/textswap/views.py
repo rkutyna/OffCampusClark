@@ -184,13 +184,16 @@ def user_listings_view(request):
     user = request.user
     print(user)
     # Filter apartments based on the user's ownership
-    user_listings = Apartment.objects.filter(owner=user)
+    user_listings = Apartment.objects.filter(owner=user).prefetch_related(
+        Prefetch('photo_set', queryset=Photo.objects.filter(apartment_id__owner=user).order_by('id'))
+    )
     
-    return render(request, 'offcampus/user_listings.html', {'user_listings': user_listings})
+    return render(request, 'offcampus/user_listings.html', {'apartments': user_listings})
 
 
 def edit_apartment(request, apartment_id):
     apartment = get_object_or_404(Apartment, id=apartment_id)
+    photo= get_object_or_404(Photo, apartment_id = apartment_id)
     if request.method == 'POST':
         form = ApartmentForm(request.POST, instance=apartment)
         if form.is_valid():
@@ -198,5 +201,5 @@ def edit_apartment(request, apartment_id):
             return redirect('apartment_detail', pk = apartment_id)  # Redirect to the detail view of the updated apartment
     else:
         form = ApartmentForm(instance=apartment)
-    return render(request, 'offcampus/edit_apartment.html', {'form': form})
+    return render(request, 'offcampus/edit_apartment.html', {'form': form, 'photo':photo})
     
