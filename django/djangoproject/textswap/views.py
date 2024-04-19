@@ -6,18 +6,24 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.contrib.auth.models import User as Auth_user
 from django.db.models import Prefetch
+from django.contrib.auth import logout
 
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
     apartments = Apartment.objects.prefetch_related(
         Prefetch('photo_set', queryset=Photo.objects.order_by('id'))
     )
-    return render(request, 'offcampus/home.html', {'apartments': apartments})  # Replace with your actual template
+    user = request.user
+    return render(request, 'offcampus/home.html', {'apartments': apartments, 'user': user})  # Replace with your actual template
     
     #claude version
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from datetime import datetime
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 def filtered_apartments(request):
     def convertToBinary(data):
@@ -138,7 +144,6 @@ def message_view(request):
 """Messaging app should have the landlordsbe associated with a specific adresses or apartment so that when 
 they create a message the message goes directly to a landlord - this is for learning about the house"""
 
-
 """For subletting, users post that they are looking to sublet on the page and people can message directly from there.
 Brings them to the messaging page for that sublet"""
 
@@ -198,6 +203,7 @@ def edit_apartment(request, apartment_id):
         form = ApartmentForm(request.POST, instance=apartment)
         if form.is_valid():
             form.save()
+            print("Success")
             return redirect('apartment_detail', pk = apartment_id)  # Redirect to the detail view of the updated apartment
     else:
         form = ApartmentForm(instance=apartment)
