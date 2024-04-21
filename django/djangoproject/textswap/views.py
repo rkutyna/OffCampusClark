@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User as Auth_user
 from django.db.models import Prefetch
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
@@ -81,6 +83,10 @@ def filtered_apartments(request):
     return JsonResponse({'apartments_html': apartments_html})
 
 def login_view(request):
+    if request.user.is_authenticated:
+        # If the user is already authenticated, redirect to the desired page
+        return redirect('home')
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -101,6 +107,8 @@ def login_view(request):
 
     else:
         form = LoginForm()
+
+    # If the user is not authenticated and the request method is GET, render the login template
     return render(request, 'offcampus/login.html', {'form': form})
 
 
@@ -135,6 +143,8 @@ def registration_view(request):
         form = RegistrationForm()
     return render(request, 'offcampus/registration.html', {'form': form})
 
+
+@login_required(login_url='/login/')
 def message_view(request):
     apartments = Apartment.objects.all()
     apartment_names = [apartment.address for apartment in apartments]
@@ -152,7 +162,7 @@ Or with subletters"""
 
 """Need a distinction in the messaging page for subletters or learning about house. Maybe S or something on the side"""
 
-
+@login_required(login_url='/login/')
 def create_apartment_view(request):
     if request.method == 'POST':
         form = ApartmentForm(request.POST, request.FILES)
@@ -182,8 +192,9 @@ def apartment_detail_view(request, pk):
     return render(request, 'offcampus/apartment_detail.html', {'apartment': apartment, 'photo':photo})
 
 
-from django.contrib.auth.decorators import login_required
 
+
+@login_required(login_url='/login/')
 def user_listings_view(request):
     # Get the logged-in user
     user = request.user
@@ -195,7 +206,7 @@ def user_listings_view(request):
     
     return render(request, 'offcampus/user_listings.html', {'apartments': user_listings})
 
-
+@login_required(login_url='/login/')
 def edit_apartment(request, apartment_id):
     apartment = get_object_or_404(Apartment, id=apartment_id)
     photo= get_object_or_404(Photo, apartment_id = apartment_id)

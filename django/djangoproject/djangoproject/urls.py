@@ -19,6 +19,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('textswap.urls')),  # Include your app's URLs for the root path
+    path('', include('textswap.urls')),
+  # Include your app's URLs for the root path
     # Add other URLs as needed
 ]

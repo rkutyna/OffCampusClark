@@ -13,6 +13,33 @@
         .navbar.navbar-expand-lg.navbar-dark.bg-dark {
             background-color: rgb(191, 65, 65) !important;
           }
+
+          .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+          }
+
+          .form-group {
+            width: 48%;
+            margin-bottom: 1rem;
+          }
+
+          .photo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+          }
+
+          footer {
+            position: relative; /* Keep footer fixed at the bottom */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 10px 0;
+            text-align: center;
+            border-top: 1px solid #ccc;
+        }
         
     </style>
 </head>
@@ -63,31 +90,48 @@
 
       <h1>Edit Apartment</h1>
 
+      <div class="photo-container">
+        <label for="photo_preview" style="font-weight: bold; display: block; text-align: center;">Current Photo:</label>
+        <div style="border: 3px solid #ccc; padding: 5px; display: inline-block; margin: 0 auto;">
+              {% if photo.photo %}
+                  <img id="photo_preview" src="{% get_static_prefix %}images/{{ photo.photo_name }}" alt="Apartment Photo" style="max-width: 300px;">
+              {% else %}
+                  <p>No photo available.</p>
+              {% endif %}
+        </div>
+      </div>
+
       <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           {{ form.non_field_errors }}
-      
-          {% for field in form %}
-              <div>
+          <div class="form-container">
+            {% for field in form %}
+            {% if field.name == 'photo' %}
+            <div class="form-group">
+              <label for="{{ field.id_for_label }}">Update Photo: Choose File </label>
+              {{ field }}
+            </div>
+            {% else %}
+            <div class="form-group">
                   {{ field.label_tag }}
                   {{ field }}
                   {% if field.help_text %}
                       <p>{{ field.help_text }}</p>
                   {% endif %}
                   {{ field.errors }}
+                  
               </div>
+            {% endif %}
           {% endfor %}
-      
-          <div>
-              <label for="photo_preview">Current Photo:</label>
-              {% if photo.photo %}
-                  <img id="photo_preview" src="{% get_static_prefix %}images/{{ photo.photo_name }}" alt="Apartment Photo" style="max-width: 300px;">
-              {% else %}
-                  <p>No photo available.</p>
-              {% endif %}
           </div>
       
+          
+          <br><br> 
           <button type="submit">Update Apartment</button>
       </form>
+
+      <footer>
+        <p>&copy; 2024 OffCampus Clark. All rights reserved.</p>
+      </footer>
 </body>
 </html>
