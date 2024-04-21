@@ -200,11 +200,24 @@ def edit_apartment(request, apartment_id):
     apartment = get_object_or_404(Apartment, id=apartment_id)
     photo= get_object_or_404(Photo, apartment_id = apartment_id)
     if request.method == 'POST':
-        form = ApartmentForm(request.POST, instance=apartment)
+        form = ApartmentForm(request.POST, request.FILES, instance=apartment)
         if form.is_valid():
-            form.save()
-            print("Success")
-            return redirect('apartment_detail', pk = apartment_id)  # Redirect to the detail view of the updated apartment
+            # Save the form data to create a new Apartment instance
+            apartment = form.save(commit=False)
+            apartment.owner = request.user  # Assuming you're using authentication and the user is logged in
+            apartment.save()
+            # Redirect to a page where you want to show the details of the newly created apartment
+            # print(apartment.pk)
+            if request.FILES['photo']:
+                print("\n \n \n",os.listdir(), '\n \n \n')
+                os.remove('textswap/static/images/'+photo.photo_name)
+                print(apartment_id)
+                Photo.objects.get(apartment_id=apartment).delete()
+                photo = Photo(apartment_id=apartment, photo=request.FILES['photo'])
+                photo.save()
+            else:
+                pass
+            return redirect('apartment_detail', pk=apartment.pk)  # Redirect to a view to show apartment details
     else:
         form = ApartmentForm(instance=apartment)
     return render(request, 'offcampus/edit_apartment.html', {'form': form, 'photo':photo})
