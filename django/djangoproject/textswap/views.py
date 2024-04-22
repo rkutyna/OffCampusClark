@@ -147,8 +147,16 @@ def registration_view(request):
 @login_required(login_url='/login/')
 def message_view(request):
     apartments = Apartment.objects.all()
-    apartment_names = [apartment.address for apartment in apartments]
-    return render(request, 'offcampus/messages.html', {'apartment_names': apartment_names})
+    apartment_data = []
+    for apartment in apartments:
+        owner = apartment.owner
+        user = User.objects.get(id = owner.id)
+        apartment_data.append({
+            'name': apartment.address,
+            'owner_email': user.email
+        })
+    # apartment_names = [apartment.address for apartment in apartments]
+    return render(request, 'offcampus/messages.html', {'apartment_data': apartment_data})
 
 
 """Messaging app should have the landlordsbe associated with a specific adresses or apartment so that when 
