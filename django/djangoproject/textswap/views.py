@@ -232,4 +232,26 @@ def edit_apartment(request, apartment_id):
     else:
         form = ApartmentForm(instance=apartment)
     return render(request, 'offcampus/edit_apartment.html', {'form': form, 'photo':photo})
-    
+
+from django.contrib import messages
+
+@login_required(login_url='/login/')
+def delete_apartment(request, apartment_id):
+    # Retrieve the apartment object based on the primary key (apartment_id)
+    apartment = get_object_or_404(Apartment, id=apartment_id)
+
+    # Check if the logged-in user is the owner of the apartment
+    if request.user == apartment.owner:
+        # If the request method is POST, it means the user has confirmed the deletion
+        if request.method == 'POST':
+            # Delete the apartment
+            apartment.delete()
+            messages.success(request, 'Apartment deleted successfully.')
+            return redirect('user_listings')  # Redirect to the user's listings page or any other appropriate page
+        else:
+            # If the request method is not POST, render the confirmation template
+            return render(request, 'offcampus/confirm_delete_apartment.html', {'apartment': apartment})
+    else:
+        # If the logged-in user is not the owner of the apartment, show an error message
+        messages.error(request, 'You are not authorized to delete this apartment.')
+        return redirect('user_listings')  # Redirect to the user's listings page or any other appropriate page

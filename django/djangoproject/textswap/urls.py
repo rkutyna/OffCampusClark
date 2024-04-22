@@ -12,5 +12,6 @@ urlpatterns = [
     path('user/listings/', user_listings_view, name='user_listings'),
     path('edit_apartment/<int:apartment_id>/', edit_apartment, name='edit_apartment'),
     path('logout/', logout_view, name='logout'),
+    path('delete_apartment/<int:apartment_id>/', delete_apartment, name='delete_apartment')
     # Add other URLs as needed
 ]

@@ -126,12 +126,28 @@
           </div>
       
           
-          <br><br> 
-          <button type="submit">Update Apartment</button>
+          <br><br>
+          <div style="display: flex; justify-content: space-between;">
+            <button type="submit">Update Apartment</button>
+            <button type="button" onclick="confirmDelete('{{ form.instance.id }}')" style="background-color: red; color: white;">Delete Apartment</button>
+          </div>
       </form>
-
+      <br><br>
       <footer>
         <p>&copy; 2024 OffCampus Clark. All rights reserved.</p>
       </footer>
 </body>
+<script>
+  function confirmDelete(apartmentId) {
+      console.log("Apartment ID:", apartmentId); // Log the apartment ID for debugging
+      if (confirm("Are you sure you want to delete this apartment?")) {
+        if (apartmentId) {
+            console.log("Deleting apartment with ID:", apartmentId); // Log the deletion operation for debugging
+            window.location.href = "{% url 'delete_apartment' 0 %}".replace('0', apartmentId);
+        } else {
+            console.error("Apartment ID is empty."); // Log an error if the apartment ID is empty
+        }
+    }
+  }
+</script>
 </html>
