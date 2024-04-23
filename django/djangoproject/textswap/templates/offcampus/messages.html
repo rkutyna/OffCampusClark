@@ -112,12 +112,13 @@
             <label for="apartment-select"></label>
             <select id="apartment-select">
                 <option value="">Select apartment to message</option>
-                {% for apartment_name in apartment_names %}
-                    <option value="{{ apartment_name }}">{{ apartment_name }}</option>
+                {% for data in apartment_data %}
+                    <option value="{{ data.owner_email }}">{{ data.name }}</option>
                 {% endfor %}
             </select>
         </div>
         <button id="select-button">Select</button>
+        <div id="owner-email-display"></div>
         </div>
     </div>
 
@@ -128,8 +129,12 @@
     <script>
         document.getElementById('select-button').addEventListener('click', function(){
             var selectedApartment = document.getElementById( "apartment-select" ).value;
-
-            alert("You selected: " + selectedApartment);
+            if (selectedApartment) {
+              document.getElementById("owner-email-display").innerHTML = "Owner's email: " + selectedApartment;
+            } else {
+              document.getElementById("owner-email-display").innerHTML = "";
+            }
+            
         });
     </script>
 
