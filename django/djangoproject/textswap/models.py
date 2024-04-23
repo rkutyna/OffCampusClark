@@ -46,14 +46,14 @@ class Message(models.Model):
     content = models.TextField()
 
 class Apartment(models.Model):
-    address = models.CharField(max_length=100, unique=True)
+    address = models.CharField(unique=True)
     description = models.TextField()
     dishwasher = models.BooleanField()
     washer_dryer = models.BooleanField(default = False)
     sublet = models.BooleanField()
     rent = models.IntegerField()
     move_in_date = models.DateField()
-    lease_length = models.CharField(max_length = 50)
+    lease_length = models.CharField()
     owner = models.ForeignKey(Auth_user, on_delete=models.CASCADE)
     pets_allowed = models.BooleanField()
     num_beds = models.IntegerField()
@@ -65,7 +65,7 @@ class Photo(models.Model):
     # The photo name and photo url are separate because django uses different directories when storing the 
     # photo and when attempting to access the photo, so this code in addition to get_upload_path() and save()
     # ensures that the photos are saved to the correct location
-    photo_name = models.CharField(max_length=100, default=None)  # New field to store the photo name
+    photo_name = models.CharField(default=None)  # New field to store the photo name
     photo = models.ImageField(upload_to=get_upload_path)  # Use a custom function for upload_to
     
     def save(self, *args, **kwargs):
