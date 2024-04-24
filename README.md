@@ -10,11 +10,11 @@
 
 4. Edit .env and change RANDOM_PASSWORD to a random password and change SOMETHING_LONG_AND_RANDOM to something long and random
 
-5. Run docker compose up -d
+5. Run > docker compose up -d
 
-6. Run > docker compose exec django python manage.py makemigrations
+6. Run > docker compose exec django python manage.py migrate
 
-7. Run > docker compose exec django python manage.py migrate
+7. Run > docker compose exec django python manage.py createsuperuser
 
 ## To load image after creating new listing
 
