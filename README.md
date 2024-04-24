@@ -17,6 +17,7 @@
 7. Run > docker compose exec django python manage.py createsuperuser
 
 ## To load image after creating new listing
+#### We are still working on getting the application to be able to see files saved in real time.
 
 1. Run docker compose down
 
