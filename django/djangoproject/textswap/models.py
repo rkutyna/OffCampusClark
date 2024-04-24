@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User as Auth_user
 from django.db.models.functions import Now
 from datetime import datetime
@@ -51,14 +52,14 @@ class Apartment(models.Model):
     dishwasher = models.BooleanField()
     washer_dryer = models.BooleanField(default = False)
     sublet = models.BooleanField()
-    rent = models.IntegerField()
+    rent = models.DecimalField(decimal_places=2, max_digits=10)
     move_in_date = models.DateField()
     lease_length = models.CharField()
     owner = models.ForeignKey(Auth_user, on_delete=models.CASCADE)
     pets_allowed = models.BooleanField()
-    num_beds = models.IntegerField()
-    num_baths = models.IntegerField()
-    num_sqr_ft = models.IntegerField()
+    num_beds = models.IntegerField(validators=[MinValueValidator(0)])
+    num_baths = models.IntegerField(validators=[MinValueValidator(0)])
+    num_sqr_ft = models.IntegerField(validators=[MinValueValidator(0)])
     
 class Photo(models.Model):
     apartment_id = models.ForeignKey(Apartment, on_delete=models.CASCADE)
