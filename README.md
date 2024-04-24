@@ -16,6 +16,12 @@
 
 7. Run > docker compose exec django python manage.py migrate
 
+## To load image after creating new listing
+
+1. Run docker compose down
+
+2. Run docker compose up -d
+
 The project should show up by going to localhost in a browser.
 
 The files/folders nginx, postgres_files, docker, docker-compose.yml, docekrfile, and dot_env_example were taken from https://github.com/ClarkuCSCI/csci220-django
