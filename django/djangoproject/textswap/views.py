@@ -227,9 +227,9 @@ def edit_apartment(request, apartment_id):
             apartment.save()
             # Redirect to a page where you want to show the details of the newly created apartment
             # print(apartment.pk)
-            if request.FILES['photo']:
-                print("\n \n \n",os.listdir(), '\n \n \n')
-                os.remove('textswap/static/images/'+photo.photo_name)
+            if 'photo' in request.FILES and request.FILES['photo']:
+                print("\n \n \n", os.listdir(), '\n \n \n')
+                os.remove('textswap/static/images/' + photo.photo_name)
                 print(apartment_id)
                 Photo.objects.get(apartment_id=apartment).delete()
                 photo = Photo(apartment_id=apartment, photo=request.FILES['photo'])
