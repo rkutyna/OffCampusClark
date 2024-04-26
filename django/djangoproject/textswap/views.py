@@ -9,6 +9,7 @@ from django.db.models import Prefetch
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
+from django.conf import settings
 
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
@@ -229,7 +230,7 @@ def edit_apartment(request, apartment_id):
             # print(apartment.pk)
             if 'photo' in request.FILES and request.FILES['photo']:
                 print("\n \n \n", os.listdir(), '\n \n \n')
-                os.remove('textswap/static/images/' + photo.photo_name)
+                os.remove(settings.MEDIA_ROOT+"/"+str(apartment_id)+"/"+photo.photo_name)
                 print(apartment_id)
                 Photo.objects.get(apartment_id=apartment).delete()
                 photo = Photo(apartment_id=apartment, photo=request.FILES['photo'])
