@@ -24,21 +24,23 @@
     <h1 class="my-4">Apartment Listings</h1>
     <div class="row row-cols-1 row-cols-md-4 g-4">
         {% for apartment in apartments %}
-        <div class="col">
-            <a href="{% url 'apartment_detail' apartment.id %}" class="card-link">
-                <div class="card h-100">
-                    <img src="{% get_static_prefix %}images/{{ apartment.photo_set.first.photo_name }}" class="card-img-top" alt="{{ apartment.address }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ apartment.address }}</h5>
-                        <p class="card-text">
-                        {{ apartment.description }} <br>
-                        <strong>Rent:</strong> {{ apartment.rent }} <br>
-                        <strong>Number of Beds:</strong> {{ apartment.num_beds }}
-                        </p>                      
+            <div class="col">
+                <a href="{% url 'apartment_detail' apartment.id %}" class="card-link">
+                    <div class="card h-100">
+                        {% with apartment.photo_set.first as photo %}
+                            <img src="{{ photo.photo.url }}" class="card-img-top" alt="{{ apartment.address }}">
+                        {% endwith %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ apartment.address }}</h5>
+                            <p class="card-text">
+                                {{ apartment.description }} <br>
+                                <strong>Rent:</strong> {{ apartment.rent }} <br>
+                                <strong>Number of Beds:</strong> {{ apartment.num_beds }}
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
         {% endfor %}
     </div>
 </div>

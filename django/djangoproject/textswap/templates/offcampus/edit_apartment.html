@@ -94,7 +94,7 @@
         <label for="photo_preview" style="font-weight: bold; display: block; text-align: center;">Current Photo:</label>
         <div style="border: 3px solid #ccc; padding: 5px; display: inline-block; margin: 0 auto;">
               {% if photo.photo %}
-                  <img id="photo_preview" src="{% get_static_prefix %}images/{{ photo.photo_name }}" alt="Apartment Photo" style="max-width: 300px;">
+                  <img id="photo_preview" src="{{ photo.photo.url }}" alt="Apartment Photo" style="max-width: 300px;">
               {% else %}
                   <p>No photo available.</p>
               {% endif %}

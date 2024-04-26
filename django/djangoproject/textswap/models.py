@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.contrib.auth.models import User as Auth_user
 from django.db.models.functions import Now
 from datetime import datetime
+from django.conf import settings
 import os
 
 
@@ -13,7 +14,8 @@ class User(models.Model):
     is_student = models.BooleanField(default=False)
     
 def get_upload_path(instance, filename):
-    return os.path.join('textswap/static/images', filename)
+    image_path = os.path.join(str(instance.apartment_id.id), filename)
+    return image_path
         
 """class Apartment(models.Model):
     address = models.CharField(max_length=100)
@@ -74,4 +76,5 @@ class Photo(models.Model):
             original_filename = os.path.basename(self.photo.name)
             self.photo_name = original_filename.replace(' ', '_')
         print("\n \n \n", self.photo_name, "\n \n \n")
+        print(settings.MEDIA_ROOT)
         super().save(*args, **kwargs)

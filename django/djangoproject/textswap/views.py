@@ -16,7 +16,7 @@ def my_home_view(request):
         Prefetch('photo_set', queryset=Photo.objects.order_by('id'))
     )
     user = request.user
-    return render(request, 'offcampus/home.html', {'apartments': apartments, 'user': user})  # Replace with your actual template
+    return render(request, 'offcampus/home.html', {'apartments': apartments, 'user': user})
     
     #claude version
 from django.http import JsonResponse
