@@ -16,6 +16,8 @@
 
 7. Run > docker compose exec django python manage.py createsuperuser
 
+In .env file set DJANGO_DEBUG=True
+
 ## To load image after creating new listing
 
 - We are still working on getting the application to be able to see files saved in real time.
@@ -29,3 +31,5 @@ The project should show up by going to localhost in a browser.
 The files/folders nginx, postgres_files, docker, docker-compose.yml, docekrfile, and dot_env_example were taken from https://github.com/ClarkuCSCI/csci220-django
 
 Credit to Dr. Peter Story for these files, our professor for the class this was created, in part, for.
+
+
