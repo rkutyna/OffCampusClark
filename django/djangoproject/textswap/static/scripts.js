@@ -66,8 +66,11 @@ $(document).ready(function() {
         // Call filterListings function to update the listings
         filterListings();
     }
+    const resetFiltersButton = document.getElementById('resetFiltersButton');
+
+    resetFiltersButton.addEventListener('click', resetFilters);
     // Bind the resetFilters function to the "Reset Filters" button click event
     // $('.btn-secondary:contains("Reset Filters")').click(resetFilters);
-    //document.getElementById('resetFiltersButton').addEventListener('click', resetFilters);
+    // document.getElementById('resetFiltersButton').addEventListener('click', resetFilters);
     
 });
