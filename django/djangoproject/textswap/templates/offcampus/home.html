@@ -2,35 +2,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="{% static 'styles.css' %}" rel="stylesheet">
-    
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        main {
-            flex-grow: 1;
-        }
-      footer {
-          position: sticky;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          background-color: #f0f0f0;
-          padding: 10px 0;
-          text-align: center;
-          border-top: 1px solid #ccc;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
+  <script src="{% static 'scripts.js' %}"></script>
+  <link href="{% static 'styles.css' %}" rel="stylesheet">
+  <style>
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    main {
+        flex-grow: 1;
+    }
+    footer {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f0f0f0;
+        padding: 10px 0;
+        text-align: center;
+        border-top: 1px solid #ccc;
+    }
+  </style>
     
 </head>
 <body>
@@ -40,51 +39,47 @@
 
       <!-- Filter form -->
   <div class = "container mt-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#additionalFilters" aria-expanded="false" aria-controls="additionalFilters">
+      Filters
+    </button>
     <form id="filterForm">
-      <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#additionalFilters" aria-expanded="false" aria-controls="additionalFilters">
-        Filters
-      </button>
-     
-      <button type="button" class="btn btn-secondary" id="hideFilters">Hide Filters</button>
-  
-  
       <div class="collapse" id="additionalFilters">
-          <div class="card card-body mt-3">
-            <div class="form-group">
-              <label for="sublet">Sublet or Whole Apartment:</label>
-              <select class="form-control" id="sublet">
-                <option value="">All Apartments</option>
-                <option value="true">Sublet</option>
-                <option value="false">Whole Apartment</option>
-                <!-- Add more options as needed -->
-              </select>
+        <div class="card card-body mt-3">
+          <div class="form-group">
+            <label for="sublet">Sublet or Whole Apartment:</label>
+            <select class="form-control" id="sublet">
+              <option value="">All Apartments</option>
+              <option value="true">Sublet</option>
+              <option value="false">Whole Apartment</option>
+              <!-- Add more options as needed -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="priceRange">Price Range:</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price">
+              <span class="input-group-text">to</span>
+              <input type="number" class="form-control" id="maxPrice" placeholder="Maximum price">
             </div>
-            <div class="form-group">
-              <label for="priceRange">Price Range:</label>
-              <div class="input-group">
-                <input type="number" class="form-control" id="minPrice" placeholder="Minimum Price">
-                <span class="input-group-text">to</span>
-                <input type="number" class="form-control" id="maxPrice" placeholder="Maximum price">
-              </div>
-            </div>
+          </div>
               <!-- Existing form fields -->
             
-            <div class="form-group">
-                <label for="dishwasher">Dishwasher:</label>
-                <select class="form-control" id="dishwasher">
-                    <option value="">Any</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                </select>
-            </div>
-  
-            <div class="form-group">
-              <label for="washer_dryer">Laundry Included:</label>
-              <select class="form-control" id="washer_dryer">
+          <div class="form-group">
+              <label for="dishwasher">Dishwasher:</label>
+              <select class="form-control" id="dishwasher">
                   <option value="">Any</option>
                   <option value="true">Yes</option>
                   <option value="false">No</option>
               </select>
+          </div>
+  
+          <div class="form-group">
+            <label for="washer_dryer">Laundry Included:</label>
+            <select class="form-control" id="washer_dryer">
+                <option value="">Any</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
           </div>
         
           <div class="form-group">
@@ -104,7 +99,7 @@
                   <option value="false">No</option>
               </select>
           </div>
-        
+          
           <div class="form-group">
               <label for="numBeds">Number of Beds:</label>
               <input type="number" class="form-control" id="numBeds" min="1" value="">
@@ -119,32 +114,18 @@
           <button type="button" class="btn btn-secondary" id="resetFiltersButton">Reset Filters</button>
         </div>
       </div>
-    
-      
     </form>
   </div>
-  
 
+  <div id="listings">
+    {% include "offcampus/apartment_list.html" %}
+  </div>
 
-
-<div id="listings">
-  {% include "offcampus/apartment_list.html" %}
-</div>
-    
-
-
-    <footer class="footer mt-auto py-3 bg-body-tertiary">
-      <div class="container">
-        <span class="text-body-secondary"><p>&copy; 2024 OffCampus Clark. All rights reserved.</p></span>
-      </div>
-    </footer>
+  <footer class="footer mt-auto py-3 bg-body-tertiary">
+    <div class="container">
+      <span class="text-body-secondary"><p>&copy; 2024 OffCampus Clark. All rights reserved.</p></span>
+    </div>
+  </footer>
 
 </body>
-<script>
-  $(hideFilters).on('click',function(){
-  $('.collapse').collapse('hide');
-  })
-</script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{% static 'scripts.js' %}"></script>
 </html>

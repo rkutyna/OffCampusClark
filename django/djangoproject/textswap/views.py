@@ -10,7 +10,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.conf import settings
-
+    #claude version
+from datetime import datetime
 from django.contrib.auth import authenticate, login
 def my_home_view(request):
     apartments = Apartment.objects.prefetch_related(
@@ -19,10 +20,7 @@ def my_home_view(request):
     user = request.user
     return render(request, 'offcampus/home.html', {'apartments': apartments, 'user': user})
     
-    #claude version
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from datetime import datetime
+
 
 def logout_view(request):
     logout(request)
