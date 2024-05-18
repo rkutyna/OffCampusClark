@@ -5,7 +5,6 @@ volumes:
   django-socket:
   postgres-data:
   postgres-socket:
-  #static-volume:
 
 services:
   django:
@@ -19,7 +18,6 @@ services:
       - POSTGRES_DB
     restart: unless-stopped
     volumes:
-      #- static-volume:/usr/src/django/djangoproject/textswap/static/images
       - "./django:/usr/src/django"
       - "django-socket:/var/www/uwsgi"
       - "django-gen:/gen"
