@@ -18,6 +18,8 @@
 
 7. Run > docker compose exec django python manage.py createsuperuser
 
+8. You should be able to access the website at localhost:8080
+
 
 
 ## To load image after creating new listing

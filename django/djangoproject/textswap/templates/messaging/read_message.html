@@ -1,0 +1,7 @@
+{% extends "base_generic.html" %}
+{% load static%}
+{% block content %}
+<h2>Message from {{ message.sender }}</h2>
+<p>{{ message.content }}</p>
+<p><a href="{% url 'inbox' %}">Back to Inbox</a></p>
+{% endblock %}

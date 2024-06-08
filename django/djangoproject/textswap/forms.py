@@ -22,3 +22,8 @@ class ApartmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['photo'].required = False
+        
+class MessageForm(forms.Form):
+    class Meta:
+        model = Message
+        fields = ['recipient', 'content']

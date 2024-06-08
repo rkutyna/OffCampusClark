@@ -7,7 +7,7 @@ urlpatterns = [
     path('', my_home_view, name='home'),
     path('login/', login_view, name='login'),
     path('registration/', registration_view, name='registration'),
-    path('messages/',message_view, name = 'messages'),
+    path('messages/', inbox, name = 'messages'),
     path('filtered_apartments/', filtered_apartments, name='filtered_apartments'),
     path('create/', create_apartment_view, name='create_apartment'),
     path('apartment/<int:pk>/', apartment_detail_view, name='apartment_detail'),
@@ -15,8 +15,8 @@ urlpatterns = [
     path('edit_apartment/<int:apartment_id>/', edit_apartment, name='edit_apartment'),
     path('logout/', logout_view, name='logout'),
     path('delete_apartment/<int:apartment_id>/', delete_apartment, name='delete_apartment'),
-    # Add other URLs as needed
     
-    path('create-message/', create_message, name='create-message'),
-    path('stream-chat-messages/', stream_chat_messages, name='stream-chat-messages'),
+    path('inbox/', inbox, name='inbox'),
+    path('message/<int:message_id>/', read_message, name='read_message'),
+    path('send/<str:username>/', send_message, name='send_message'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

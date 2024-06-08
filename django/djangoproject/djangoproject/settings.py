@@ -34,8 +34,9 @@ ALLOWED_HOSTS = [
 ]
 
 # Application definition
-
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'textswap.apps.TextswapConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'djangoproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,7 +75,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djangoproject.wsgi.application'
+ASGI_APPLICATION = 'djangoproject.asgi.application'
 
+# Configure the channel layer to use Redis
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(os.environ.get('REDIS_HOST', 'localhost'), int(os.environ.get('REDIS_PORT', 6379)))],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

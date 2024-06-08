@@ -8,6 +8,8 @@ volumes:
 
 services:
   django:
+    ports:
+      - "8000:8000"
     build: "."
     environment:
       - DJANGO_DEBUG
@@ -16,6 +18,8 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     restart: unless-stopped
     volumes:
       - "./django:/usr/src/django"
@@ -45,3 +49,8 @@ services:
       - "postgres-data:/var/lib/postgresql/data"
       - "postgres-socket:/var/run/postgresql"
       - "./postgres_files:/postgres_files"
+  
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"

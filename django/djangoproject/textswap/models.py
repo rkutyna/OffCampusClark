@@ -43,10 +43,11 @@ def get_upload_path(instance, filename):
         super().save(*args, **kwargs)"""
     
 class Message(models.Model):
-    user1_id = models.ForeignKey(Auth_user, on_delete=models.CASCADE, related_name='sender')
-    user2_id = models.ForeignKey(Auth_user, on_delete=models.CASCADE, related_name='receiver')
+    sender = models.ForeignKey(Auth_user, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(Auth_user, on_delete=models.CASCADE, related_name='receiver')
     time_sent = models.DateTimeField(default=datetime.now)
     content = models.TextField()
+    is_read = models.BooleanField(default=False)
 
 class Apartment(models.Model):
     address = models.CharField(unique=True)

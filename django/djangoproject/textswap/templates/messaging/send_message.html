@@ -1,0 +1,51 @@
+{% extends "base_generic.html" %}
+{% load static%}
+{% block content %}
+<h2>Send a message to {{ recipient.username }}</h2>
+<form id="chat-form">
+    <input type="text" id="chat-message-input" autocomplete="off" placeholder="Type your message here...">
+    <input type="submit" value="Send">
+</form>
+<ul id="messages"></ul>
+
+<script>
+    const recipientUsername = "{{ recipient.username }}";
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/messaging/' + recipientUsername + '/'
+    );
+
+    chatSocket.onopen = function(e) {
+        console.log('WebSocket connection opened.');
+    };
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log('Message received:', data);
+        const message = data['message'];
+        const sender = data['sender'];
+        const messages = document.getElementById('messages');
+        const messageElement = document.createElement('li');
+        messageElement.textContent = `${sender}: ${message}`;
+        messages.appendChild(messageElement);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly:', e);
+    };
+
+    chatSocket.onerror = function(e) {
+        console.error('WebSocket error:', e);
+    };
+
+    document.getElementById('chat-form').onsubmit = function(e) {
+        e.preventDefault();
+        const messageInput = document.getElementById('chat-message-input');
+        const message = messageInput.value;
+        console.log('Sending message:', message);
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInput.value = '';
+    };
+</script>
+{% endblock %}

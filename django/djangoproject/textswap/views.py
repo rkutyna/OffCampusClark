@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import *
-from .forms import LoginForm, RegistrationForm, ApartmentForm
+from .forms import LoginForm, RegistrationForm, ApartmentForm, MessageForm
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.contrib.auth.models import User as Auth_user
@@ -262,3 +262,31 @@ def delete_apartment(request, apartment_id):
         # If the logged-in user is not the owner of the apartment, show an error message
         messages.error(request, 'You are not authorized to delete this apartment.')
         return redirect('user_listings')  # Redirect to the user's listings page or any other appropriate page
+
+@login_required(login_url='/login/')
+def inbox(request):
+    messages = Message.objects.filter(recipient=request.user)
+    users = User.objects.exclude(id=request.user.id)
+    return render(request, 'messaging/inbox.html', {'messages': messages, 'users': users})
+
+@login_required(login_url='/login/')
+def read_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id, recipient=request.user)
+    message.is_read = True
+    message.save()
+    return render(request, 'messaging/read_message.html', {'message': message})
+
+@login_required(login_url='/login/')
+def send_message(request, username):
+    recipient = get_object_or_404(User, username=username)
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.recipient = recipient
+            message.save()
+            return redirect('inbox')
+    else:
+        form = MessageForm()
+    return render(request, 'messaging/send_message.html', {'form': form, 'recipient': recipient})
