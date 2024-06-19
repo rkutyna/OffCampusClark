@@ -17,6 +17,7 @@ urlpatterns = [
     path('delete_apartment/<int:apartment_id>/', delete_apartment, name='delete_apartment'),
     
     path('inbox/', inbox, name='inbox'),
+    path('api/get_latest_message/<str:sender_username>/', get_latest_message, name='get_latest_message'),
     path('message/<int:message_id>/', read_message, name='read_message'),
-    path('send/<str:username>/', send_message, name='send_message'),
+    path('messaging/<str:username>/', send_message, name='send_message'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

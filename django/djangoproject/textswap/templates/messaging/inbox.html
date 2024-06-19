@@ -2,14 +2,7 @@
 {% block content %}
 {% load static %}
 <h2>Inbox</h2>
-<ul id="message-list">
-    {% for message in messages %}
-    <li>
-        <a href="{% url 'read_message' message.id %}">{{ message.sender }}: {{ message.content|truncatewords:10 }}</a>
-        {% if not message.is_read %}<strong>(unread)</strong>{% endif %}
-    </li>
-    {% endfor %}
-</ul>
+<ul id="message-list"></ul>
 
 <h2>Start a new chat</h2>
 <ul>
@@ -27,27 +20,19 @@
 
     inboxSocket.onopen = function(e) {
         console.log('WebSocket connection opened.');
+        fetchInitialMessages();
+        console.log('Initial Messages Fetched');
     };
 
     inboxSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        const message = data['message'];
-        const sender = data['sender'];
+        const messageData = data['message'];
+        const message = messageData['message'];
+        const sender = messageData['sender'];
+        const messageId = messageData['message_id'];
+        const isRead = messageData['is_read'];
 
-        const messageList = document.getElementById('message-list');
-        const messageElement = document.createElement('li');
-        const messageLink = document.createElement('a');
-        messageLink.href = '{% url 'read_message' 0 %}'.replace('0', data['message_id']);
-        messageLink.textContent = `${sender}: ${message}`;
-        messageElement.appendChild(messageLink);
-
-        if (!data['is_read']) {
-            const unreadSpan = document.createElement('strong');
-            unreadSpan.textContent = ' (unread)';
-            messageElement.appendChild(unreadSpan);
-        }
-
-        messageList.appendChild(messageElement);
+        updateMessageElement(sender, message, messageId, isRead);
     };
 
     inboxSocket.onclose = function(e) {
@@ -57,5 +42,69 @@
     inboxSocket.onerror = function(e) {
         console.error('WebSocket error:', e);
     };
+
+    function fetchInitialMessages() {
+        const distinctSenders = JSON.parse('{{ distinct_senders_json|safe }}');
+        const messageList = document.getElementById('message-list');
+
+        distinctSenders.forEach(sender => {
+            const url = `/api/get_latest_message/${sender}/`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        const { message, message_id, is_read } = data;
+                        createMessageElement(messageList, sender, message, message_id, is_read);
+                    }
+                })
+                .catch(error => console.error('Error fetching initial messages:', error));
+        });
+    }
+
+    function createMessageElement(messageList, sender, message, messageId, isRead) {
+        const messageElement = document.createElement('li');
+        messageElement.setAttribute('data-sender', sender);
+        const messageLink = document.createElement('a');
+        messageLink.href = '{% url 'read_message' 0 %}'.replace('0', messageId);
+        messageLink.textContent = `${sender}: ${message}`;
+        messageLink.classList.add('message');
+        messageLink.setAttribute('data-message-id', messageId);
+        messageLink.setAttribute('data-is-read', isRead);
+        messageElement.appendChild(messageLink);
+
+        if (!isRead) {
+            const unreadSpan = document.createElement('strong');
+            unreadSpan.textContent = ' (unread)';
+            messageLink.appendChild(unreadSpan);
+        }
+
+        messageList.appendChild(messageElement);
+    }
+
+    function updateMessageElement(sender, message, messageId, isRead) {
+        const messageList = document.getElementById('message-list');
+        const senderMessageElement = messageList.querySelector(`[data-sender="${sender}"] .message`);
+    
+        if (senderMessageElement) {
+            // Replace the previous most recent message
+            const messageLink = senderMessageElement;
+            messageLink.textContent = `${sender}: ${message}`;
+            messageLink.setAttribute('data-message-id', messageId);
+            messageLink.setAttribute('data-is-read', isRead);
+    
+            // Update the (unread) tag
+            const unreadSpan = messageLink.querySelector('strong');
+            if (unreadSpan) {
+                unreadSpan.textContent = isRead ? '' : ' (unread)';
+            } else if (!isRead) {
+                const newUnreadSpan = document.createElement('strong');
+                newUnreadSpan.textContent = ' (unread)';
+                messageLink.appendChild(newUnreadSpan);
+            }
+        } else {
+            // Create a new message element for the sender
+            createMessageElement(messageList, sender, message, messageId, isRead);
+        }
+    }
 </script>
 {% endblock %}

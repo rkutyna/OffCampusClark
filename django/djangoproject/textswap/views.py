@@ -4,8 +4,8 @@ from .models import *
 from .forms import LoginForm, RegistrationForm, ApartmentForm, MessageForm
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-from django.contrib.auth.models import User as Auth_user
-from django.db.models import Prefetch
+from django.contrib.auth.models import User
+from django.db.models import Prefetch, Q
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
@@ -13,6 +13,7 @@ from django.conf import settings
     #claude version
 from datetime import datetime
 from django.contrib.auth import authenticate, login
+import json
 def my_home_view(request):
     apartments = Apartment.objects.prefetch_related(
         Prefetch('photo_set', queryset=Photo.objects.order_by('id'))
@@ -265,9 +266,26 @@ def delete_apartment(request, apartment_id):
 
 @login_required(login_url='/login/')
 def inbox(request):
-    messages = Message.objects.filter(recipient=request.user)
+    #messages = Message.objects.filter(recipient=request.user)
+    distinct_senders = list(Message.objects.filter(recipient=request.user).values_list('sender__username', flat=True).distinct())
     users = User.objects.exclude(id=request.user.id)
-    return render(request, 'messaging/inbox.html', {'messages': messages, 'users': users})
+    #apartments = Apartment.objects.exclude(owner=request.user)
+    return render(request, 'messaging/inbox.html', {'users': users, 'distinct_senders_json': json.dumps(distinct_senders)})
+
+@login_required
+def get_latest_message(request, sender_username):
+    try:
+        sender = User.objects.get(username=sender_username)
+        message = Message.objects.filter(recipient=request.user, sender=sender).order_by('-time_sent').first()
+        if message:
+            return JsonResponse({
+                'message': message.content,
+                'message_id': message.id,
+                'is_read': message.is_read
+            })
+    except User.DoesNotExist:
+        pass
+    return JsonResponse({'message': None})
 
 @login_required(login_url='/login/')
 def read_message(request, message_id):
@@ -279,6 +297,12 @@ def read_message(request, message_id):
 @login_required(login_url='/login/')
 def send_message(request, username):
     recipient = get_object_or_404(User, username=username)
+    
+    previous_messages = Message.objects.filter(
+        Q(sender=request.user, recipient=recipient) |
+        Q(sender=recipient, recipient=request.user)
+    ).order_by('time_sent')
+    
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -289,4 +313,4 @@ def send_message(request, username):
             return redirect('inbox')
     else:
         form = MessageForm()
-    return render(request, 'messaging/send_message.html', {'form': form, 'recipient': recipient})
+    return render(request, 'messaging/send_message.html', {'form': form, 'recipient': recipient, 'previous_messages': previous_messages})

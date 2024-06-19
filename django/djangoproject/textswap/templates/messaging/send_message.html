@@ -1,15 +1,27 @@
 {% extends "base_generic.html" %}
-{% load static%}
+{% load static %}
 {% block content %}
 <h2>Send a message to {{ recipient.username }}</h2>
 <form id="chat-form">
     <input type="text" id="chat-message-input" autocomplete="off" placeholder="Type your message here...">
     <input type="submit" value="Send">
 </form>
+
+<h3>Previous Messages</h3>
+<ul id="previous-messages">
+    {% for message in previous_messages %}
+    <li class="{% if message.sender == request.user %}sent{% else %}received{% endif %}">
+        {{ message.sender.username }}: {{ message.content }}
+    </li>
+    {% endfor %}
+</ul>
+
+<h3>New Messages</h3>
 <ul id="messages"></ul>
 
 <script>
     const recipientUsername = "{{ recipient.username }}";
+    const currentUsername = "{{ request.user.username }}"; // Get the current user's username
     const chatSocket = new WebSocket(
         'ws://' + window.location.host + '/ws/messaging/' + recipientUsername + '/'
     );
@@ -20,9 +32,10 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
+        const object = data['message']
         console.log('Message received:', data);
-        const message = data['message'];
-        const sender = data['sender'];
+        const message = object['message'];
+        const sender = object['sender'];
         const messages = document.getElementById('messages');
         const messageElement = document.createElement('li');
         messageElement.textContent = `${sender}: ${message}`;
@@ -46,6 +59,12 @@
             'message': message
         }));
         messageInput.value = '';
+
+        // Update the "New Messages" section with the sent message
+        /*const messages = document.getElementById('messages');
+        const messageElement = document.createElement('li');
+        messageElement.textContent = `${currentUsername}: ${message}`;
+        messages.appendChild(messageElement);*/
     };
 </script>
 {% endblock %}
