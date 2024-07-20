@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/get_latest_message/<str:sender_username>/', get_latest_message, name='get_latest_message'),
     path('message/<int:message_id>/', read_message, name='read_message'),
     path('messaging/<str:username>/', send_message, name='send_message'),
+    path('mark_messages_as_read/<str:recipient_username>/', mark_messages_as_read, name='mark_messages_as_read'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

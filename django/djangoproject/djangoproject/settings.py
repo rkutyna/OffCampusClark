@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 # Application definition
 INSTALLED_APPS = [
     'daphne',
+    #'widget_tweaks',
     'channels',
     'textswap.apps.TextswapConfig',
     'django.contrib.admin',

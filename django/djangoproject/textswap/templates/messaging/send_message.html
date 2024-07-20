@@ -1,26 +1,87 @@
 {% extends "base_generic.html" %}
 {% load static %}
 {% block content %}
-<h2>Send a message to {{ recipient.username }}</h2>
-<form id="chat-form">
-    <input type="text" id="chat-message-input" autocomplete="off" placeholder="Type your message here...">
-    <input type="submit" value="Send">
-</form>
+<style>
+    .message {
+        display: block;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+        width: fit-content; /* Add this line */
+        margin: 10px 0; /* Add this line */
+    }
+    
+    .sent {
+        background-color: #E2A9A9;
+        margin-left: auto;
+    }
+    
+    .received {
+        background-color: #A9E2E2;
+        margin-right: auto;
+    }
+    #chat-form {
+        display: flex;
+        width: 100%;
+    }
+    
+    #chat-message-input {
+        flex: 1;
+        border-radius: 5px 0 0 5px;
+    }
+    
+    #chat-form input[type="submit"] {
+        border-radius: 0 5px 5px 0;
+    }
+    .auto-scroll {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+    }
+</style>
+<h2> Chat with {{ recipient.username }}</h2>
+<div class="container mt-3">
+    <div id="chat-container" class="border bg-light p-3 rounded auto-scroll" style="height: 63vh;">
+        <div id="previous-messages">
+            {% for message in previous_messages %}
+            <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                {{ message.sender.username }}: {{ message.content }}
+            </div>
+            {% endfor %}
+        </div>
+        <div id="messages"></div>
+    </div>
+    <form id="chat-form" class="d-flex">
+        <input type="text" id="chat-message-input" class="form-control" autocomplete="off" placeholder="Type your message here...">
+        <input type="submit" class="btn btn-primary" value="Send">
+    </form>
+</div>
 
-<h3>Previous Messages</h3>
-<ul id="previous-messages">
-    {% for message in previous_messages %}
-    <li class="{% if message.sender == request.user %}sent{% else %}received{% endif %}">
-        {{ message.sender.username }}: {{ message.content }}
-    </li>
-    {% endfor %}
-</ul>
 
-<h3>New Messages</h3>
-<ul id="messages"></ul>
 
 <script>
     const recipientUsername = "{{ recipient.username }}";
+
+    const markMessagesAsReadUrl = "{% url 'mark_messages_as_read' recipient.username %}";
+
+    window.onload = function() {
+        fetch(markMessagesAsReadUrl, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            credentials: 'same-origin',
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Messages marked as read');
+            } else {
+                console.error('Failed to mark messages as read');
+            }
+        })
+        .catch(error => console.error('Error marking messages as read:', error));
+    };
+
     const currentUsername = "{{ request.user.username }}"; // Get the current user's username
     const chatSocket = new WebSocket(
         'ws://' + window.location.host + '/ws/messaging/' + recipientUsername + '/'
@@ -39,7 +100,21 @@
         const messages = document.getElementById('messages');
         const messageElement = document.createElement('li');
         messageElement.textContent = `${sender}: ${message}`;
+        messageElement.classList.add('message');
+        if (sender === currentUsername) {
+            messageElement.classList.add('sent');
+        } else {
+            messageElement.classList.add('received');
+        }
         messages.appendChild(messageElement);
+        fetch(markMessagesAsReadUrl, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            credentials: 'same-origin',
+        })
     };
 
     chatSocket.onclose = function(e) {
@@ -65,6 +140,11 @@
         const messageElement = document.createElement('li');
         messageElement.textContent = `${currentUsername}: ${message}`;
         messages.appendChild(messageElement);*/
+        
     };
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatContainer = document.getElementById('chat-container');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
 </script>
 {% endblock %}

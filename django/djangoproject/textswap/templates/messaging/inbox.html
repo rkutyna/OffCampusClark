@@ -1,17 +1,60 @@
 {% extends "base_generic.html" %}
 {% block content %}
 {% load static %}
+<style>
+    .message {
+        list-style-type: none;
+        display: block;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+        width: fit-content; /* Add this line */
+        margin: 10px 0; /* Add this line */
+        background-color: #A9E2E2;
+        text-decoration: none; /* Add this to remove underline from links */
+        color: inherit; /* Add this to keep the default text color */
+    }
+    .messageLink {
+        text-decoration: none; /* Add this to remove underline from links */
+        color: inherit; /* Add this to keep the default text color */
+    }
+    /* Add this new rule */
+    #message-list {
+        padding-left: 0; /* Remove default padding */
+        margin-left: 0; /* Remove default margin */
+    }
+</style>
 <h2>Inbox</h2>
-<ul id="message-list"></ul>
+<div id="message-list"></div>
 
 <h2>Start a new chat</h2>
-<ul>
-    {% for user in users %}
-    <li>
-        <a href="{% url 'send_message' user.username %}">Chat with {{ user.username }}</a>
-    </li>
-    {% endfor %}
-</ul>
+
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton">
+      Select an apartment to message
+    </button>
+    <ul class="dropdown-menu">
+        <div class="dropdown-header">
+            <input type="text" class="form-control" placeholder="Search..." id="searchInput">
+        </div>
+      {% for apartment in apartments %}
+      <li>
+        <a class = "dropdown-item" href="{% url 'send_message' apartment.owner.username %}">{{ apartment.address }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+</div>
+
+  <script>
+    $(document).ready(function() {
+      $('#searchInput').on('input', function() {
+        var searchValue = $(this).val().toLowerCase();
+        $('.dropdown-menu .dropdown-item').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
+        });
+      });
+    });
+  </script>
 
 <script>
     const inboxSocket = new WebSocket(
@@ -64,33 +107,35 @@
     function createMessageElement(messageList, sender, message, messageId, isRead) {
         const messageElement = document.createElement('li');
         messageElement.setAttribute('data-sender', sender);
+        messageElement.classList.add('message'); // Add this line
+        
         const messageLink = document.createElement('a');
-        messageLink.href = '{% url 'read_message' 0 %}'.replace('0', messageId);
+        messageLink.classList.add('messageLink');
+        messageLink.href = '{% url 'send_message' 0 %}'.replace('0', sender);
         messageLink.textContent = `${sender}: ${message}`;
-        messageLink.classList.add('message');
         messageLink.setAttribute('data-message-id', messageId);
         messageLink.setAttribute('data-is-read', isRead);
         messageElement.appendChild(messageLink);
-
+    
         if (!isRead) {
             const unreadSpan = document.createElement('strong');
             unreadSpan.textContent = ' (unread)';
             messageLink.appendChild(unreadSpan);
         }
-
+    
         messageList.appendChild(messageElement);
     }
 
     function updateMessageElement(sender, message, messageId, isRead) {
         const messageList = document.getElementById('message-list');
-        const senderMessageElement = messageList.querySelector(`[data-sender="${sender}"] .message`);
+        const senderMessageElement = messageList.querySelector(`[data-sender="${sender}"]`);
     
         if (senderMessageElement) {
             // Replace the previous most recent message
-            const messageLink = senderMessageElement;
+            const messageLink = senderMessageElement.querySelector('a');
             messageLink.textContent = `${sender}: ${message}`;
             messageLink.setAttribute('data-message-id', messageId);
-            messageLink.setAttribute('data-is-read', isRead);
+            senderMessageElement.setAttribute('data-is-read', isRead);
     
             // Update the (unread) tag
             const unreadSpan = messageLink.querySelector('strong');

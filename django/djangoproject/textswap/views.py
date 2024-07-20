@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import *
-from .forms import LoginForm, RegistrationForm, ApartmentForm, MessageForm
+from .forms import LoginForm, RegistrationForm, ApartmentForm, MessageForm, PhotoForm
 from django.template.loader import render_to_string
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from django.db.models import Prefetch, Q
 from django.contrib.auth import logout
@@ -173,31 +173,28 @@ Or with subletters"""
 @login_required(login_url='/login/')
 def create_apartment_view(request):
     if request.method == 'POST':
-        form = ApartmentForm(request.POST, request.FILES)
-        if form.is_valid():
-            # Save the form data to create a new Apartment instance
-            apartment = form.save(commit=False)
-            apartment.owner = request.user  # Assuming you're using authentication and the user is logged in
+        apartment_form = ApartmentForm(request.POST)
+        photo_form = PhotoForm(request.POST, request.FILES)
+        if apartment_form.is_valid() and photo_form.is_valid():
+            apartment = apartment_form.save(commit=False)
+            apartment.owner = request.user
             apartment.save()
-            # Redirect to a page where you want to show the details of the newly created apartment
-            # print(apartment.pk)
             
-            photo = Photo(apartment_id=apartment, photo=request.FILES['photo'])
-            photo.save()
-            return redirect('apartment_detail', pk=apartment.pk)  # Redirect to a view to show apartment details
-        else:
-            print("form not valid")
-            print(form.errors)
+            photos = request.FILES.getlist('photos')
+            for photo in photos:
+                Photo.objects.create(apartment_id=apartment, photo=photo)
+            
+            return redirect('apartment_detail', pk=apartment.pk)
     else:
-        form = ApartmentForm()
-    return render(request, 'offcampus/create_apartment.html', {'form': form})
+        apartment_form = ApartmentForm()
+        photo_form = PhotoForm()
+    return render(request, 'offcampus/create_apartment.html', {'apartment_form': apartment_form, 'photo_form': photo_form})
 
 
 def apartment_detail_view(request, pk):
-    # Retrieve the apartment object based on the primary key (pk)
     apartment = get_object_or_404(Apartment, pk=pk)
-    photo= get_object_or_404(Photo, apartment_id = pk)
-    return render(request, 'offcampus/apartment_detail.html', {'apartment': apartment, 'photo':photo})
+    photos = Photo.objects.filter(apartment_id=apartment)
+    return render(request, 'offcampus/apartment_detail.html', {'apartment': apartment, 'photos': photos})
 
 
 
@@ -269,8 +266,8 @@ def inbox(request):
     #messages = Message.objects.filter(recipient=request.user)
     distinct_senders = list(Message.objects.filter(recipient=request.user).values_list('sender__username', flat=True).distinct())
     users = User.objects.exclude(id=request.user.id)
-    #apartments = Apartment.objects.exclude(owner=request.user)
-    return render(request, 'messaging/inbox.html', {'users': users, 'distinct_senders_json': json.dumps(distinct_senders)})
+    apartments = Apartment.objects.exclude(owner=request.user)
+    return render(request, 'messaging/inbox.html', {'users': users, 'distinct_senders_json': json.dumps(distinct_senders), 'apartments': apartments})
 
 @login_required
 def get_latest_message(request, sender_username):
@@ -286,6 +283,13 @@ def get_latest_message(request, sender_username):
     except User.DoesNotExist:
         pass
     return JsonResponse({'message': None})
+
+@login_required
+def mark_messages_as_read(request, recipient_username):
+    recipient = User.objects.get(username=recipient_username)
+    unread_messages = Message.objects.filter(recipient=request.user, sender=recipient, is_read=False)
+    unread_messages.update(is_read=True)
+    return HttpResponse()
 
 @login_required(login_url='/login/')
 def read_message(request, message_id):
