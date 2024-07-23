@@ -14,6 +14,10 @@ from django.conf import settings
 from datetime import datetime
 from django.contrib.auth import authenticate, login
 import json
+
+def test_view(request):
+    return HttpResponse("Hello, world. You're at the polls index.")
+
 def my_home_view(request):
     apartments = Apartment.objects.prefetch_related(
         Prefetch('photo_set', queryset=Photo.objects.order_by('id'))
