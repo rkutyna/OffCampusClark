@@ -16,7 +16,7 @@
                 <a href="{% url 'apartment_detail' apartment.id %}" class="card-link">
                     <div class="card h-100">
                         {% with apartment.photo_set.first as photo %}
-                            <img src="{{ photo.photo.url }}" class="card-img-top" alt="{{ apartment.address }}">
+                            <img src="{{ MEDIA_URL }}{{ photo.photo.url }}" class="card-img-top" alt="{{ apartment.address }}">
                         {% endwith %}
                         <div class="card-body">
                             <h5 class="card-title">{{ apartment.address }}</h5>
