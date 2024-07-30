@@ -1,5 +1,7 @@
 # Off Campus Clark
 
+## Please explore the website and example listings at http://159.203.179.200
+
 ## How To Run
 
 1. Clone this repository
@@ -22,15 +24,6 @@
 
 
 
-## To load image after creating new listing
-
-- We are still working on getting the application to be able to see files saved in real time.
-
-1. Run > docker compose down
-
-2. Run > docker compose up -d
-
-The project should show up by going to localhost in a browser.
 
 The files/folders nginx, postgres_files, docker, docker-compose.yml, docekrfile, and dot_env_example were taken from https://github.com/ClarkuCSCI/csci220-django
 
