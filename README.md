@@ -27,6 +27,6 @@
 
 The files/folders nginx, postgres_files, docker, docker-compose.yml, docekrfile, and dot_env_example were taken from https://github.com/ClarkuCSCI/csci220-django
 
-Credit to Dr. Peter Story for these files, our professor for the class this was created, in part, for.
+Credit to Dr. Peter Story for these files, our professor for the class this was started in.
 
 
