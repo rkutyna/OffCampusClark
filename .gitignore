@@ -7,6 +7,7 @@
 .DS_Store
 __pycache__
 .env
+tutor.md
 # Virtual Environment
 venv/
 
