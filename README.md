@@ -1,7 +1,5 @@
 # Off Campus Clark
 
-## Please explore the website and example listings at http://159.203.179.200
-
 ## How To Run
 
 1. Clone this repository
@@ -20,7 +18,9 @@
 
 7. Run > docker compose exec django python manage.py createsuperuser
 
-8. You should be able to access the website at localhost:8080
+8. Run > docker compose exec django python manage.py collectstatic
+
+9. You should be able to access the website at localhost:8080
 
 
 
