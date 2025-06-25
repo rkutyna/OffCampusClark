@@ -10,14 +10,10 @@ services:
   django:
     build: "."
     command: uvicorn djangoproject.asgi:application --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - ./.env
     environment:
       - DJANGO_SETTINGS_MODULE=djangoproject.settings
-      - DJANGO_DEBUG
-      - DJANGO_PUBLIC_HOSTNAME
-      - DJANGO_SECRET_KEY
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     restart: unless-stopped

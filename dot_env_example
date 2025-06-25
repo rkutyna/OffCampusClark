@@ -20,3 +20,6 @@ DJANGO_SECRET_KEY=SOMETHING_LONG_AND_RANDOM
 # Should be kept False on public-facing servers. Gives full stack traces and
 # disables certain security safeguards. Change to True for local debugging.
 DJANGO_DEBUG=False
+
+# Sets allowed host
+CURRENT_HOST=127.0.0.1
