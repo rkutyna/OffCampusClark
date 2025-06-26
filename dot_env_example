@@ -1,12 +1,6 @@
 LISTEN_NGINX_HTTP=127.0.0.1:8080
 LISTEN_NGINX_HTTPS=127.0.0.1:8484
 
-# Used by Django for security.
-# For local development:
-DJANGO_PUBLIC_HOSTNAME=localhost
-# For the public production server:
-#DJANGO_PUBLIC_HOSTNAME=example.clarku.edu
-
 # Database configuration
 POSTGRES_USER=django
 POSTGRES_PASSWORD=RANDOM_PASSWORD
@@ -21,5 +15,7 @@ DJANGO_SECRET_KEY=SOMETHING_LONG_AND_RANDOM
 # disables certain security safeguards. Change to True for local debugging.
 DJANGO_DEBUG=False
 
-# Sets allowed host
-CURRENT_HOST=127.0.0.1
+# A comma-separated list of hostnames that are allowed to access the application.
+# For local development, you might use: 127.0.0.1,localhost
+# For production, you would add your public domain(s): example.clarku.edu,www.example.clarku.edu
+ALLOWED_HOSTS_FROM_ENV=127.0.0.1,localhost
