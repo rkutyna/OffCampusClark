@@ -19,3 +19,8 @@ DJANGO_DEBUG=False
 # For local development, you might use: 127.0.0.1,localhost
 # For production, you would add your public domain(s): example.clarku.edu,www.example.clarku.edu
 ALLOWED_HOSTS_FROM_ENV=127.0.0.1,localhost
+
+# A comma-separated list of trusted origins for POST requests (e.g., for logins).
+# The full scheme (https://) is required.
+# For example: https://offcampus-demo-rk.site,https://another-domain.com
+CSRF_TRUSTED_ORIGINS_FROM_ENV=https://offcampus-demo-rk.site

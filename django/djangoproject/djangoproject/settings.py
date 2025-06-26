@@ -36,6 +36,10 @@ ALLOWED_HOSTS = [
 additional_hosts = os.environ.get('ALLOWED_HOSTS_FROM_ENV', '').split(',')
 ALLOWED_HOSTS.extend([host.strip() for host in additional_hosts if host.strip()])
 
+# A list of trusted origins for POST requests. Required for security.
+# For example: CSRF_TRUSTED_ORIGINS_FROM_ENV=https://example.com,https://sub.example.com
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS_FROM_ENV', '').split(',')
+
 # Application definition
 INSTALLED_APPS = [
     'channels',
