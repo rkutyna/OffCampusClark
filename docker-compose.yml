@@ -24,6 +24,7 @@ services:
       - "postgres-socket:/var/run/postgresql"
   nginx:
     image: nginx:alpine
+    restart: unless-stopped
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - "django-gen:/usr/share/nginx/html/static:ro"
@@ -46,5 +47,6 @@ services:
   
   redis:
     image: "redis:alpine"
+    restart: unless-stopped
     ports:
       - "6379:6379"
